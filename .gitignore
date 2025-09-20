@@ -1,0 +1,23 @@
+# Ignore Composer dependencies
+/elms/vendor/
+
+# Ignore Composer lock file
+/elms/composer.lock
+
+# Ignore credentials or sensitive files
+/elms/credentials.json
+.env
+
+# Ignore system files
+.DS_Store
+Thumbs.db
+
+# Ignore logs and temp files
+*.log
+*.tmp
+*.cache
+*.swp
+
+# Ignore IDE/editor config
+.vscode/
+.idea/
