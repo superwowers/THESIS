@@ -1,209 +1,170 @@
 <?php
 session_start();
+
+// Admin sample data
+$students = [
+    ['id' => 1, 'name' => 'Lauren Mae Espinar', 'email' => 'lrnmspnr@gmail.com'],
+    ['id' => 2, 'name' => 'Michael Brown', 'email' => 'michaelbrown@gmail.com'],
+];
+
+$teachers = [
+    ['id' => 1, 'name' => 'Mr. John Doe', 'email' => 'johndoe@gmail.com'],
+    ['id' => 2, 'name' => 'Ms. Jane Smith', 'email' => 'janesmith@gmail.com'],
+];
+
+$courses = [
+    ['title' => 'AI Basics', 'image' => 'https://images.unsplash.com/photo-1581090700227-4c4ef1a3d6c2?auto=format&fit=crop&w=400&q=80'],
+    ['title' => 'Web Development', 'image' => 'https://images.unsplash.com/photo-1529101091764-c3526daf38fe?auto=format&fit=crop&w=400&q=80'],
+    ['title' => 'Database Systems', 'image' => 'https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=400&q=80'],
+];
+
+$announcements = [
+    ['title' => 'System maintenance on Sept 30', 'date' => '2025-09-20'],
+    ['title' => 'New teacher orientation', 'date' => '2025-09-18'],
+    ['title' => 'Updated course curriculum released', 'date' => '2025-09-15'],
+];
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>ELMS Admin Dashboard</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: {
+              DEFAULT: '#710E0E',
+              light: '#8a2b2b',
+              dark: '#5a0a0a',
+            }
+          }
+        }
+      }
+    }
+  </script>
 </head>
-<body class="flex bg-gray-100">
+<body class="bg-gray-100 flex min-h-screen">
 
   <!-- Sidebar -->
-  <aside class="w-64 bg-red-900 text-white h-screen p-5 fixed shadow-lg transition-all duration-500">
-    <div class="text-center mb-8 animate-fadeIn">
-      <h3 class="text-2xl font-bold tracking-wide">ELMS Admin</h3>
-    </div>
-    <ul class="space-y-3">
-      <li><a href="#" class="flex items-center gap-3 p-3 rounded-md bg-red-700 transition hover:translate-x-1" onclick="showSection('dashboard')"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
-      <li><a href="#" class="flex items-center gap-3 p-3 rounded-md hover:bg-red-700 transition hover:translate-x-1" onclick="showSection('students')"><i class="fas fa-users"></i> Students</a></li>
-      <li><a href="#" class="flex items-center gap-3 p-3 rounded-md hover:bg-red-700 transition hover:translate-x-1" onclick="showSection('teachers')"><i class="fas fa-chalkboard-teacher"></i> Teachers</a></li>
-      <li><a href="#" class="flex items-center gap-3 p-3 rounded-md hover:bg-red-700 transition hover:translate-x-1" onclick="showSection('courses')"><i class="fas fa-book"></i> Courses</a></li>
-      <li><a href="#" class="flex items-center gap-3 p-3 rounded-md hover:bg-red-700 transition hover:translate-x-1" onclick="showSection('settings')"><i class="fas fa-cog"></i> Settings</a></li>
+  <nav class="bg-primary-dark text-white w-64 min-h-screen p-6 flex flex-col shadow-lg">
+    <h1 class="text-3xl font-bold mb-10">ELMS Admin</h1>
+    <ul class="space-y-4 flex-grow">
+      <li><a href="#" class="block px-4 py-2 rounded-lg hover:bg-primary-light transition">Dashboard</a></li>
+      <li><a href="#" class="block px-4 py-2 rounded-lg hover:bg-primary-light transition">Students</a></li>
+      <li><a href="#" class="block px-4 py-2 rounded-lg hover:bg-primary-light transition">Teachers</a></li>
+      <li><a href="#" class="block px-4 py-2 rounded-lg hover:bg-primary-light transition">Courses</a></li>
+      <li><a href="#" class="block px-4 py-2 rounded-lg hover:bg-primary-light transition">Settings</a></li>
     </ul>
-  </aside>
+    <a href="#" class="mt-auto block px-4 py-2 rounded-lg bg-red-600 hover:bg-red-500 transition text-center">Logout</a>
+  </nav>
 
   <!-- Main Content -->
-  <main class="ml-64 flex-1 p-6">
+  <main class="flex-grow p-8 flex flex-col gap-8">
 
     <!-- Header -->
-    <header class="bg-white shadow-md rounded-xl p-4 flex justify-between items-center mb-6 animate-slideDown">
-      <h1 class="text-2xl font-semibold text-red-900" id="page-title">Dashboard</h1>
+    <header class="bg-gradient-to-r from-primary to-primary-dark text-white rounded-2xl shadow-lg p-6 flex justify-between items-center">
+      <h2 class="text-2xl font-semibold">Welcome, <?= $_SESSION['username'] ?? 'Admin User' ?></h2>
       <div class="flex items-center gap-3">
-        <img src="https://via.placeholder.com/40" alt="User" class="rounded-full">
-        <span class="font-medium"><?php echo isset($_SESSION['username']) ? $_SESSION['username'] : 'Admin User'; ?></span>
+        <img src="https://via.placeholder.com/40" class="w-10 h-10 rounded-full border-2 border-white" />
+        <span><?= $_SESSION['username'] ?? 'Admin User' ?></span>
       </div>
     </header>
 
-    <!-- Dashboard -->
-    <section id="dashboard" class="section active animate-fadeIn">
-      <!-- Quick Actions -->
-      <div class="flex gap-4 mb-6">
-        <button class="bg-cyan-600 hover:bg-cyan-700 text-white px-4 py-2 rounded-lg shadow flex items-center gap-2 transition hover:scale-105"><i class="fas fa-user-plus"></i> Add Student</button>
-        <button class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg shadow flex items-center gap-2 transition hover:scale-105"><i class="fas fa-chalkboard-teacher"></i> Add Teacher</button>
-        <button class="bg-yellow-500 hover:bg-yellow-600 text-black px-4 py-2 rounded-lg shadow flex items-center gap-2 transition hover:scale-105"><i class="fas fa-book-medical"></i> Add Course</button>
+    <!-- Stats -->
+    <section class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="bg-white p-6 rounded-2xl shadow-lg text-center hover:scale-105 transition">
+        <h3 class="text-3xl font-extrabold text-primary"><?= count($students) ?></h3>
+        <p class="text-gray-600">Students</p>
       </div>
-
-      <!-- Widgets -->
-      <div class="grid grid-cols-3 gap-6 mb-6">
-        <div class="bg-white p-5 rounded-xl shadow flex items-center gap-4 hover:shadow-lg transition transform hover:-translate-y-1">
-          <i class="fas fa-user-graduate text-red-900 text-3xl"></i>
-          <div><span class="text-xl font-bold">320</span><p>Students</p></div>
-        </div>
-        <div class="bg-white p-5 rounded-xl shadow flex items-center gap-4 hover:shadow-lg transition transform hover:-translate-y-1">
-          <i class="fas fa-chalkboard-teacher text-red-900 text-3xl"></i>
-          <div><span class="text-xl font-bold">28</span><p>Teachers</p></div>
-        </div>
-        <div class="bg-white p-5 rounded-xl shadow flex items-center gap-4 hover:shadow-lg transition transform hover:-translate-y-1">
-          <i class="fas fa-book text-red-900 text-3xl"></i>
-          <div><span class="text-xl font-bold">56</span><p>Courses</p></div>
-        </div>
+      <div class="bg-white p-6 rounded-2xl shadow-lg text-center hover:scale-105 transition">
+        <h3 class="text-3xl font-extrabold text-primary"><?= count($teachers) ?></h3>
+        <p class="text-gray-600">Teachers</p>
       </div>
-
-      <!-- Chart -->
-      <div class="bg-white p-6 rounded-xl shadow mb-6 flex justify-center">
-        <canvas id="enrollmentChart" class="max-w-[220px] max-h-[220px]"></canvas>
-      </div>
-
-      <!-- Notifications -->
-      <div class="bg-white p-6 rounded-xl shadow animate-slideUp">
-        <h4 class="text-lg font-semibold text-red-900 mb-3">Notifications</h4>
-        <ul class="space-y-2 text-sm">
-          <li class="flex items-center gap-2"><i class="fas fa-exclamation-circle text-red-900"></i> Michael Brown pending approval</li>
-          <li class="flex items-center gap-2"><i class="fas fa-check-circle text-green-600"></i> New course added: AI Basics</li>
-          <li class="flex items-center gap-2"><i class="fas fa-envelope text-blue-600"></i> Admin message received</li>
-        </ul>
+      <div class="bg-white p-6 rounded-2xl shadow-lg text-center hover:scale-105 transition">
+        <h3 class="text-3xl font-extrabold text-primary"><?= count($courses) ?></h3>
+        <p class="text-gray-600">Courses</p>
       </div>
     </section>
 
-    <!-- Students -->
-    <section id="students" class="section hidden animate-fadeIn">
-      <div class="bg-white p-6 rounded-xl shadow mb-6">
-        <h2 class="text-xl font-semibold text-red-900 mb-4">Students</h2>
-        <button class="mb-4 bg-cyan-600 text-white px-4 py-2 rounded-lg hover:bg-cyan-700 transition hover:scale-105"><i class="fas fa-user-plus"></i> Add Student</button>
-        <table class="w-full text-sm border border-gray-200 rounded-lg">
-          <thead class="bg-gray-100">
-            <tr>
-              <th class="px-4 py-2 border">ID</th>
-              <th class="px-4 py-2 border">Name</th>
-              <th class="px-4 py-2 border">Email</th>
-              <th class="px-4 py-2 border">Actions</th>
+    <!-- Students Table -->
+    <section class="bg-white rounded-2xl shadow-lg p-6">
+      <h2 class="text-xl font-semibold text-primary mb-4">Students</h2>
+      <table class="w-full text-sm border border-gray-200 rounded-lg overflow-hidden">
+        <thead class="bg-gray-100">
+          <tr>
+            <th class="px-4 py-2 border">ID</th>
+            <th class="px-4 py-2 border">Name</th>
+            <th class="px-4 py-2 border">Email</th>
+          </tr>
+        </thead>
+        <tbody>
+          <?php foreach ($students as $student): ?>
+            <tr class="hover:bg-gray-50 transition">
+              <td class="px-4 py-2 border"><?= $student['id'] ?></td>
+              <td class="px-4 py-2 border"><?= htmlspecialchars($student['name']) ?></td>
+              <td class="px-4 py-2 border"><?= htmlspecialchars($student['email']) ?></td>
             </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td class="px-4 py-2 border">1</td>
-              <td class="px-4 py-2 border">Lauren Mae Espinar</td>
-              <td class="px-4 py-2 border">lrnmspnr@gmail.com</td>
-              <td class="px-4 py-2 border"><button class="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700 transition">Delete</button></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+          <?php endforeach; ?>
+        </tbody>
+      </table>
     </section>
 
-    <!-- Teachers -->
-    <section id="teachers" class="section hidden animate-fadeIn">
-      <div class="bg-white p-6 rounded-xl shadow mb-6">
-        <h2 class="text-xl font-semibold text-red-900 mb-4">Teachers</h2>
-        <button class="mb-4 bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition hover:scale-105"><i class="fas fa-plus"></i> Add Teacher</button>
-        <table class="w-full text-sm border border-gray-200 rounded-lg">
-          <thead class="bg-gray-100">
-            <tr>
-              <th class="px-4 py-2 border">ID</th>
-              <th class="px-4 py-2 border">Name</th>
-              <th class="px-4 py-2 border">Email</th>
-              <th class="px-4 py-2 border">Actions</th>
+    <!-- Teachers Table -->
+    <section class="bg-white rounded-2xl shadow-lg p-6">
+      <h2 class="text-xl font-semibold text-primary mb-4">Teachers</h2>
+      <table class="w-full text-sm border border-gray-200 rounded-lg overflow-hidden">
+        <thead class="bg-gray-100">
+          <tr>
+            <th class="px-4 py-2 border">ID</th>
+            <th class="px-4 py-2 border">Name</th>
+            <th class="px-4 py-2 border">Email</th>
+          </tr>
+        </thead>
+        <tbody>
+          <?php foreach ($teachers as $teacher): ?>
+            <tr class="hover:bg-gray-50 transition">
+              <td class="px-4 py-2 border"><?= $teacher['id'] ?></td>
+              <td class="px-4 py-2 border"><?= htmlspecialchars($teacher['name']) ?></td>
+              <td class="px-4 py-2 border"><?= htmlspecialchars($teacher['email']) ?></td>
             </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td class="px-4 py-2 border">1</td>
-              <td class="px-4 py-2 border">Mr. John Doe</td>
-              <td class="px-4 py-2 border">johndoe@gmail.com</td>
-              <td class="px-4 py-2 border"><button class="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700 transition">Delete</button></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+          <?php endforeach; ?>
+        </tbody>
+      </table>
     </section>
 
     <!-- Courses -->
-    <section id="courses" class="section hidden animate-fadeIn">
-      <div class="bg-white p-6 rounded-xl shadow mb-6">
-        <h2 class="text-xl font-semibold text-red-900 mb-4">Courses</h2>
-        <button class="mb-4 bg-yellow-500 text-black px-4 py-2 rounded-lg hover:bg-yellow-600 transition hover:scale-105"><i class="fas fa-book-medical"></i> Add Course</button>
-        <ul class="space-y-2">
-          <li class="p-3 border rounded-lg hover:bg-gray-50 transition">AI Basics</li>
-          <li class="p-3 border rounded-lg hover:bg-gray-50 transition">Web Development</li>
-          <li class="p-3 border rounded-lg hover:bg-gray-50 transition">Database Systems</li>
-        </ul>
+    <section class="bg-white rounded-2xl shadow-lg p-6">
+      <h2 class="text-xl font-semibold text-primary mb-4">Courses</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <?php foreach ($courses as $course): ?>
+          <div class="bg-gray-50 rounded-xl shadow hover:shadow-lg transition overflow-hidden group">
+            <img src="<?= htmlspecialchars($course['image']) ?>" alt="<?= htmlspecialchars($course['title']) ?>" class="h-36 object-cover w-full group-hover:scale-105 transition">
+            <div class="p-4 flex flex-col">
+              <h3 class="font-bold text-lg text-primary-dark mb-2"><?= htmlspecialchars($course['title']) ?></h3>
+              <button class="mt-auto bg-primary text-white py-2 px-4 rounded-lg hover:bg-primary-light transition">Manage</button>
+            </div>
+          </div>
+        <?php endforeach; ?>
       </div>
     </section>
 
-    <!-- Settings -->
-    <section id="settings" class="section hidden animate-fadeIn">
-      <div class="bg-white p-6 rounded-xl shadow mb-6">
-        <h2 class="text-xl font-semibold text-red-900 mb-4">Settings</h2>
-        <form class="space-y-4">
-          <div>
-            <label class="block mb-1 font-medium">Admin Name</label>
-            <input type="text" class="w-full border px-3 py-2 rounded-lg focus:ring focus:ring-red-200" value="Admin User">
-          </div>
-          <div>
-            <label class="block mb-1 font-medium">Email</label>
-            <input type="email" class="w-full border px-3 py-2 rounded-lg focus:ring focus:ring-red-200" value="admin@email.com">
-          </div>
-          <div>
-            <label class="block mb-1 font-medium">Password</label>
-            <input type="password" class="w-full border px-3 py-2 rounded-lg focus:ring focus:ring-red-200">
-          </div>
-          <button class="bg-red-900 text-white px-5 py-2 rounded-lg hover:bg-red-700 transition">Save Changes</button>
-        </form>
-      </div>
+    <!-- Announcements -->
+    <section class="bg-white rounded-2xl shadow-lg p-6">
+      <h2 class="text-xl font-semibold text-primary mb-4">Announcements</h2>
+      <ul class="divide-y divide-gray-200">
+        <?php foreach ($announcements as $news): ?>
+          <li class="py-3 flex justify-between items-center hover:bg-gray-50 transition px-2 rounded-lg">
+            <p class="font-semibold text-gray-800"><?= htmlspecialchars($news['title']) ?></p>
+            <span class="text-sm text-white bg-primary rounded-full px-3 py-1"><?= date('M j', strtotime($news['date'])) ?></span>
+          </li>
+        <?php endforeach; ?>
+      </ul>
     </section>
 
   </main>
-
-  <script>
-    function showSection(sectionId) {
-      document.querySelectorAll('.section').forEach(sec => sec.classList.add('hidden'));
-      document.getElementById(sectionId).classList.remove('hidden');
-      document.getElementById("page-title").innerText = sectionId.charAt(0).toUpperCase() + sectionId.slice(1);
-    }
-
-    // Chart.js Doughnut
-    const ctx = document.getElementById('enrollmentChart').getContext('2d');
-    new Chart(ctx, {
-      type: 'doughnut',
-      data: {
-        labels: ['Students', 'Teachers', 'Courses'],
-        datasets: [{
-          data: [320, 28, 56],
-          backgroundColor: ['#16a34a', '#eab308', '#2563eb']
-        }]
-      },
-      options: {
-        responsive: true,
-        plugins: { legend: { position: 'bottom' } },
-        animation: { animateScale: true },
-        cutout: '70%'
-      }
-    });
-  </script>
-
-  <!-- Tailwind Animations -->
-  <style>
-    @keyframes fadeIn { from { opacity: 0 } to { opacity: 1 } }
-    @keyframes slideDown { from { transform: translateY(-10px); opacity:0 } to { transform: translateY(0); opacity:1 } }
-    @keyframes slideUp { from { transform: translateY(20px); opacity:0 } to { transform: translateY(0); opacity:1 } }
-    .animate-fadeIn { animation: fadeIn .6s ease-in-out }
-    .animate-slideDown { animation: slideDown .6s ease-in-out }
-    .animate-slideUp { animation: slideUp .6s ease-in-out }
-  </style>
 </body>
 </html>
