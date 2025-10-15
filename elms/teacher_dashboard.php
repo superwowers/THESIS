@@ -1,7 +1,5 @@
 <?php
-// index.php - merged teacher dashboard + course manager in a single file
-// ----------------------------------------------------------------------
-// Demo data (from your original files)
+
 $enrolledCourses = [
     ['name' => 'Mathematics', 'lessons' => ['Algebra', 'Geometry', 'Calculus']],
     ['name' => 'Physics', 'lessons' => ['Mechanics', 'Thermodynamics', 'Optics']],
@@ -30,7 +28,7 @@ $subjectCourses = [
     ['title' => 'Basic Economics', 'image' => 'https://images.unsplash.com/photo-1610499648937-2d4e7d4c7b8e?auto=format&fit=crop&w=400&q=80'],
 ];
 
-// Which page to display
+
 $page = $_GET['page'] ?? 'teacher';
 ?>
 <!DOCTYPE html>
@@ -40,10 +38,10 @@ $page = $_GET['page'] ?? 'teacher';
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>ELMS - Teacher Panel</title>
 
-    <!-- Tailwind CDN -->
+   
     <script src="https://cdn.tailwindcss.com"></script>
 
-    <!-- Google font -->
+    
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 
     <style>
@@ -55,7 +53,7 @@ $page = $_GET['page'] ?? 'teacher';
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-thumb { background-color: var(--primary-light); border-radius: 3px; }
 
-        /* optional small local styles to ensure the layout doesn't break if Tailwind loads slowly */
+        
         .font-poppins { font-family: 'Poppins', sans-serif; }
     </style>
 
@@ -74,21 +72,21 @@ $page = $_GET['page'] ?? 'teacher';
 </head>
 <body class="font-poppins bg-gradient-to-br from-primary to-primary-dark min-h-screen text-gray-800 flex flex-col md:flex-row">
 
-    <!-- Sidebar (stays the same across pages) -->
+   
     <nav class="bg-primary-dark text-white w-full md:w-64 min-h-[60px] md:min-h-screen p-4 md:p-6 flex md:flex-col items-center md:items-start sticky top-0 z-30 overflow-y-auto">
         <h1 class="text-2xl md:text-3xl font-bold mb-0 md:mb-10">ELMS</h1>
 
         <ul class="flex md:flex-col gap-6 md:gap-4 flex-grow justify-center md:justify-start w-full">
             <li>
                 <a href="?page=teacher" class="flex items-center gap-2 px-3 py-2 rounded hover:bg-primary-light transition text-sm md:text-base">
-                    <!-- icon kept -->
+                  
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 md:h-6 md:w-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M13 5v6h6"/></svg>
                     <span class="hidden md:inline">Dashboard</span>
                 </a>
             </li>
 
             <li>
-                <a href="?page=teacher" class="flex items-center gap-2 px-3 py-2 rounded hover:bg-primary-light transition text-sm md:text-base">
+                <a href="?page=courseslist" class="flex items-center gap-2 px-3 py-2 rounded hover:bg-primary-light transition text-sm md:text-base">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 md:h-6 md:w-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 20h9"/></svg>
                     <span class="hidden md:inline">Courses</span>
                 </a>
@@ -131,14 +129,11 @@ $page = $_GET['page'] ?? 'teacher';
         </div>
     </nav>
 
-    <!-- Main area (content switches based on ?page=...) -->
+    
     <main class="flex-grow p-4 md:p-6 flex flex-col gap-8 max-w-7xl mx-auto w-full">
 
     <?php if ($page === 'teacher'): ?>
-        <!-- ========================= -->
-        <!-- TEACHER DASHBOARD CONTENT -->
-        <!-- (this is your teacher.php interface, unchanged in layout) -->
-        <!-- ========================= -->
+        
         <header class="flex justify-between items-center bg-white rounded-xl shadow-lg p-4 md:p-6">
             <div class="text-xl md:text-2xl font-semibold text-primary-dark">
                 Welcome, <span class="text-primary">Professor Smith!</span>
@@ -155,12 +150,17 @@ $page = $_GET['page'] ?? 'teacher';
                     <img src="https://via.placeholder.com/32" alt="User Avatar" class="w-8 h-8 rounded-full border-2 border-primary-light">
                     <span class="hidden md:inline font-medium">Professor Smith</span>
                 </button>
+                 
+                <a href="#" onclick="alert('Logged out!')" class="flex items-center gap-2 text-red-600 hover:text-red-800 transition">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+                    <span class="hidden md:inline font-medium">Logout</span>
+                </a>
             </div>
         </header>
 
         <section class="flex flex-col md:flex-row gap-8 w-full">
             <div class="md:w-2/3 flex flex-col gap-8">
-                <!-- Announcement Banner -->
+                
                 <section id="announcement-card" class="relative rounded-lg shadow-lg overflow-hidden cursor-pointer group w-full" onclick="toggleCoursesDropdown()" aria-label="School Announcement">
                     <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=1200&q=80" alt="School Announcement" class="w-full h-48 md:h-64 object-cover brightness-90 group-hover:brightness-75 transition" />
                     <div class="absolute inset-0 bg-gradient-to-t from-primary-dark/80 to-transparent"></div>
@@ -169,7 +169,7 @@ $page = $_GET['page'] ?? 'teacher';
                         <p class="mt-1 max-w-xl text-sm md:text-base">Important updates for the new academic year!</p>
                     </div>
 
-                    <!-- Dropdown with courses and lessons -->
+                    
                     <div id="courses-dropdown" class="absolute top-full left-0 w-full bg-white shadow-lg rounded-b-lg opacity-0 invisible transform translate-y-2 transition-all duration-300 z-20 max-h-72 overflow-y-auto border border-primary-light">
                         <div class="p-4">
                             <h3 class="text-primary font-semibold text-xl mb-3">Your Taught Courses</h3>
@@ -187,17 +187,15 @@ $page = $_GET['page'] ?? 'teacher';
                     </div>
                 </section>
 
-                <!-- Taught Courses Grid -->
-                <section class="bg-white rounded-xl shadow-lg p-6 flex flex-col">
-                    <h2 class="text-primary font-semibold text-2xl mb-6">Your Courses</h2>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+               
+                <section class="bg-white rounded-xl shadow-lg p-6">
+                    <h2 class="text-primary font-semibold text-2xl mb-6">Your Taught Courses</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <?php foreach ($subjectCourses as $course): ?>
                             <div class="bg-gray-50 rounded-lg shadow-md overflow-hidden flex flex-col">
                                 <img src="<?= htmlspecialchars($course['image']) ?>" alt="<?= htmlspecialchars($course['title']) ?>" class="w-full h-36 object-cover" />
                                 <div class="p-4 flex flex-col flex-grow">
                                     <h3 class="font-bold text-lg text-primary-dark mb-2 flex-grow"><?= htmlspecialchars($course['title']) ?></h3>
-
-                                    <!-- IMPORTANT: change the link to pass params to the single-file router -->
                                     <a href="?page=course&course_id=<?= urlencode($course['title']) ?>_id&course_title=<?= urlencode($course['title']) ?>"
                                        class="mt-auto bg-primary text-white py-2 px-4 rounded-md hover:bg-primary-light transition w-full text-center block">
                                         Manage Course
@@ -209,7 +207,7 @@ $page = $_GET['page'] ?? 'teacher';
                 </section>
             </div>
 
-            <!-- Right Sidebar content -->
+           
             <aside class="w-full md:w-1/3 flex flex-col gap-8">
                 <div class="bg-white rounded-xl shadow-lg p-6 flex flex-col">
                     <h2 class="text-primary font-semibold text-2xl mb-4 text-center">Calendar</h2>
@@ -242,13 +240,32 @@ $page = $_GET['page'] ?? 'teacher';
             </aside>
         </section>
 
+    <?php elseif ($page === 'courseslist'): ?>
+     
+        <div class="max-w-6xl mx-auto bg-white rounded-xl shadow-lg p-6 md:p-8">
+            <h1 class="text-3xl md:text-4xl font-bold text-primary-dark mb-6">Your Courses</h1>
+            <p class="text-gray-700 mb-8">Click on a course to manage its documents, quizzes, and other settings.</p>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <?php foreach ($subjectCourses as $course): ?>
+                    <div class="bg-gray-50 rounded-lg shadow-md overflow-hidden flex flex-col">
+                        <img src="<?= htmlspecialchars($course['image']) ?>" alt="<?= htmlspecialchars($course['title']) ?>" class="w-full h-36 object-cover" />
+                        <div class="p-4 flex flex-col flex-grow">
+                            <h3 class="font-bold text-lg text-primary-dark mb-2 flex-grow"><?= htmlspecialchars($course['title']) ?></h3>
+                            <a href="?page=course&course_id=<?= urlencode($course['title']) ?>_id&course_title=<?= urlencode($course['title']) ?>"
+                               class="mt-auto bg-primary text-white py-2 px-4 rounded-md hover:bg-primary-light transition w-full text-center block">
+                                Manage Course
+                            </a>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+        </div>
+
     <?php elseif ($page === 'course'): ?>
-        <!-- ========================= -->
-        <!-- COURSE MANAGEMENT CONTENT -->
-        <!-- (this is derived from your course.php file) -->
-        <!-- ========================= -->
+        
         <?php
-            // sanitize incoming values
+            
             $courseId = htmlspecialchars($_GET['course_id'] ?? 'N/A');
             $courseTitle = htmlspecialchars($_GET['course_title'] ?? 'No Course Selected');
         ?>
@@ -258,19 +275,19 @@ $page = $_GET['page'] ?? 'teacher';
                 <h1 class="text-3xl md:text-4xl font-bold text-primary-dark">
                     Manage Course: <span class="text-primary"><?= $courseTitle ?></span>
                 </h1>
-                <a href="?page=teacher" class="bg-gray-200 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-300 transition flex items-center gap-2">
+                <a href="?page=courseslist" class="bg-gray-200 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-300 transition flex items-center gap-2">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
-                    Back to Dashboard
+                    Back to Courses
                 </a>
             </div>
 
-            <!-- Tab Navigation -->
+            
             <div class="flex border-b border-gray-300 mb-6">
                 <button class="tablinks px-6 py-3 text-lg font-medium rounded-t-lg transition mr-2 focus:outline-none text-gray-700 hover:text-primary" onclick="openTab(event, 'Documents')">Documents</button>
                 <button class="tablinks px-6 py-3 text-lg font-medium rounded-t-lg transition mr-2 focus:outline-none text-gray-700 hover:text-primary" onclick="openTab(event, 'Quiz')">Interactive Quiz</button>
             </div>
 
-            <!-- Documents Tab -->
+            
             <div id="Documents" class="tabcontent">
                 <h2 class="text-2xl font-semibold text-primary-dark mb-6">Course Documents</h2>
 
@@ -287,7 +304,7 @@ $page = $_GET['page'] ?? 'teacher';
                                 <button class="text-red-600 hover:text-red-800 text-sm">Delete</button>
                             </div>
                         </li>
-                        <!-- other sample files -->
+                        
                     </ul>
                 </div>
 
@@ -311,7 +328,7 @@ $page = $_GET['page'] ?? 'teacher';
                 </div>
             </div>
 
-            <!-- Quiz Tab -->
+          
             <div id="Quiz" class="tabcontent" style="display:none;">
                 <h2 class="text-2xl font-semibold text-primary-dark mb-6">Create Interactive Quiz</h2>
 
@@ -328,7 +345,7 @@ $page = $_GET['page'] ?? 'teacher';
                         </div>
 
                         <div id="quiz-questions-container" class="space-y-4 mt-6">
-                            <!-- Questions will be added here by JavaScript -->
+                            
                         </div>
 
                         <button type="button" onclick="addQuizQuestion()" class="bg-blue-600 text-white px-5 py-2 rounded-md hover:bg-blue-700 transition flex items-center gap-2">
@@ -344,7 +361,7 @@ $page = $_GET['page'] ?? 'teacher';
                     </form>
                 </div>
 
-                <!-- Existing Quizzes (Mock Data) -->
+                
                 <div class="bg-gray-50 p-6 rounded-lg shadow mt-8">
                     <h3 class="text-xl font-bold text-primary mb-4">Existing Quizzes</h3>
                     <ul class="space-y-4">
@@ -368,20 +385,158 @@ $page = $_GET['page'] ?? 'teacher';
         </div>
 
     <?php elseif ($page === 'assignments'): ?>
-        <h1 class="text-2xl font-bold text-primary mb-4">Assignments</h1>
-        <p class="bg-white p-6 rounded-lg shadow">Create and manage assignments here.</p>
+        <div class="max-w-6xl mx-auto bg-white rounded-xl shadow-lg p-6 md:p-8">
+            <h1 class="text-3xl md:text-4xl font-bold text-primary mb-4">Assignments Management</h1>
+            <p class="text-gray-700 mb-6">Here you can create, view, and grade assignments for your courses.</p>
 
+            <button onclick="alert('Functionality to create a new assignment would go here!')" class="bg-primary text-white px-5 py-2 rounded-md hover:bg-primary-light transition">
+                Create New Assignment
+            </button>
+
+            <div class="mt-8 bg-gray-50 p-6 rounded-lg shadow">
+                <h2 class="text-xl font-semibold text-primary-dark mb-4">Existing Assignments</h2>
+                <ul class="space-y-3">
+                    <li class="flex justify-between items-center p-3 bg-white rounded-md shadow-sm border border-gray-200">
+                        <span>Algebra Homework #1 - Due 2024-09-01</span>
+                        <div class="flex gap-2">
+                            <button onclick="alert('Editing Algebra Homework #1')" class="text-blue-600 hover:text-blue-800 text-sm">Edit</button>
+                            <button onclick="alert('Viewing submissions for Algebra Homework #1')" class="text-green-600 hover:text-green-800 text-sm">View Submissions</button>
+                        </div>
+                    </li>
+                    <li class="flex justify-between items-center p-3 bg-white rounded-md shadow-sm border border-gray-200">
+                        <span>Physics Lab Report - Due 2024-09-15</span>
+                        <div class="flex gap-2">
+                            <button onclick="alert('Editing Physics Lab Report')" class="text-blue-600 hover:text-blue-800 text-sm">Edit</button>
+                            <button onclick="alert('Viewing submissions for Physics Lab Report')" class="text-green-600 hover:text-green-800 text-sm">View Submissions</button>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
     <?php elseif ($page === 'gradebook'): ?>
-        <h1 class="text-2xl font-bold text-primary mb-4">Gradebook</h1>
-        <p class="bg-white p-6 rounded-lg shadow">Student grades and reports.</p>
+        <div class="max-w-6xl mx-auto bg-white rounded-xl shadow-lg p-6 md:p-8">
+            <h1 class="text-3xl md:text-4xl font-bold text-primary mb-4">Gradebook Management</h1>
+            <p class="text-gray-700 mb-6">Manage student grades and generate reports for all your courses.</p>
+
+            <div class="flex gap-4 mb-8">
+                <button onclick="alert('Functionality to view grades by student would go here!')" class="bg-primary text-white px-5 py-2 rounded-md hover:bg-primary-light transition">
+                    View Grades by Student
+                </button>
+                <button onclick="alert('Functionality to view grades by assignment would go here!')" class="bg-primary text-white px-5 py-2 rounded-md hover:bg-primary-light transition">
+                    View Grades by Assignment
+                </button>
+            </div>
+
+            <div class="mt-8 bg-gray-50 p-6 rounded-lg shadow">
+                <h2 class="text-xl font-semibold text-primary-dark mb-4">Grade Summary (Mock Data)</h2>
+                <table class="min-w-full bg-white rounded-md shadow-sm border border-gray-200">
+                    <thead>
+                        <tr class="bg-gray-100 border-b border-gray-200 text-left">
+                            <th class="py-3 px-4 font-semibold text-gray-700">Student Name</th>
+                            <th class="py-3 px-4 font-semibold text-gray-700">Course</th>
+                            <th class="py-3 px-4 font-semibold text-gray-700">Average Grade</th>
+                            <th class="py-3 px-4 font-semibold text-gray-700">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="border-b border-gray-100">
+                            <td class="py-3 px-4">Alice Johnson</td>
+                            <td class="py-3 px-4">Mathematics</td>
+                            <td class="py-3 px-4">A-</td>
+                            <td class="py-3 px-4">
+                                <button onclick="alert('Viewing Alice Johnson\'s full grade report')" class="text-blue-600 hover:text-blue-800 text-sm">View Report</button>
+                            </td>
+                        </tr>
+                        <tr class="border-b border-gray-100">
+                            <td class="py-3 px-4">Bob Williams</td>
+                            <td class="py-3 px-4">Physics</td>
+                            <td class="py-3 px-4">B+</td>
+                            <td class="py-3 px-4">
+                                <button onclick="alert('Viewing Bob Williams\'s full grade report')" class="text-blue-600 hover:text-blue-800 text-sm">View Report</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 px-4">Charlie Brown</td>
+                            <td class="py-3 px-4">English Literature</td>
+                            <td class="py-3 px-4">B</td>
+                            <td class="py-3 px-4">
+                                <button onclick="alert('Viewing Charlie Brown\'s full grade report')" class="text-blue-600 hover:text-blue-800 text-sm">View Report</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
 
     <?php elseif ($page === 'resources'): ?>
-        <h1 class="text-2xl font-bold text-primary mb-4">Resources</h1>
-        <p class="bg-white p-6 rounded-lg shadow">Upload and manage resources.</p>
+        <div class="max-w-6xl mx-auto bg-white rounded-xl shadow-lg p-6 md:p-8">
+            <h1 class="text-3xl md:text-4xl font-bold text-primary mb-4">Course Resources</h1>
+            <p class="text-gray-700 mb-6">Upload, organize, and share supplementary materials for your courses.</p>
+
+            <button onclick="alert('Functionality to upload a new resource would go here!')" class="bg-primary text-white px-5 py-2 rounded-md hover:bg-primary-light transition">
+                Upload New Resource
+            </button>
+
+            <div class="mt-8 bg-gray-50 p-6 rounded-lg shadow">
+                <h2 class="text-xl font-semibold text-primary-dark mb-4">Available Resources (Mock Data)</h2>
+                <ul class="space-y-3">
+                    <li class="flex justify-between items-center p-3 bg-white rounded-md shadow-sm border border-gray-200">
+                        <span>Mathematics - Practice Problems Set 1.pdf</span>
+                        <div class="flex gap-2">
+                            <button onclick="alert('Editing Practice Problems Set 1')" class="text-blue-600 hover:text-blue-800 text-sm">Edit</button>
+                            <button onclick="alert('Downloading Practice Problems Set 1')" class="text-green-600 hover:text-green-800 text-sm">Download</button>
+                        </div>
+                    </li>
+                    <li class="flex justify-between items-center p-3 bg-white rounded-md shadow-sm border border-gray-200">
+                        <span>Physics - Lecture Notes Chapter 3.pptx</span>
+                        <div class="flex gap-2">
+                            <button onclick="alert('Editing Lecture Notes Chapter 3')" class="text-blue-600 hover:text-blue-800 text-sm">Edit</button>
+                            <button onclick="alert('Downloading Lecture Notes Chapter 3')" class="text-green-600 hover:text-green-800 text-sm">Download</button>
+                        </div>
+                    </li>
+                    <li class="flex justify-between items-center p-3 bg-white rounded-md shadow-sm border border-gray-200">
+                        <span>English Literature - Essay Writing Guide.docx</span>
+                        <div class="flex gap-2">
+                            <button onclick="alert('Editing Essay Writing Guide')" class="text-blue-600 hover:text-blue-800 text-sm">Edit</button>
+                            <button onclick="alert('Downloading Essay Writing Guide')" class="text-green-600 hover:text-green-800 text-sm">Download</button>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
 
     <?php elseif ($page === 'profile'): ?>
-        <h1 class="text-2xl font-bold text-primary mb-4">Profile</h1>
-        <p class="bg-white p-6 rounded-lg shadow">Edit your profile details.</p>
+        <div class="max-w-6xl mx-auto bg-white rounded-xl shadow-lg p-6 md:p-8">
+            <h1 class="text-3xl md:text-4xl font-bold text-primary mb-4">My Profile</h1>
+            <p class="text-gray-700 mb-6">Update your personal information and account settings.</p>
+
+            <form action="#" method="POST" class="space-y-6">
+                <div>
+                    <label for="full_name" class="block text-sm font-medium text-gray-700">Full Name</label>
+                    <input type="text" id="full_name" name="full_name" value="Professor Smith" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-primary focus:ring-primary" required>
+                </div>
+                <div>
+                    <label for="email" class="block text-sm font-medium text-gray-700">Email Address</label>
+                    <input type="email" id="email" name="email" value="p.smith@example.edu" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-primary focus:ring-primary" required>
+                </div>
+                <div>
+                    <label for="department" class="block text-sm font-medium text-gray-700">Department</label>
+                    <input type="text" id="department" name="department" value="Computer Science" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-primary focus:ring-primary">
+                </div>
+                <div>
+                    <label for="bio" class="block text-sm font-medium text-gray-700">Bio</label>
+                    <textarea id="bio" name="bio" rows="4" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-primary focus:ring-primary">Professor Smith specializes in artificial intelligence and machine learning.</textarea>
+                </div>
+                <div>
+                    <button type="submit" onclick="alert('Profile updated successfully!')" class="bg-primary text-white px-5 py-2 rounded-md hover:bg-primary-light transition">
+                        Save Profile
+                    </button>
+                    <button type="button" onclick="alert('Change password functionality here!')" class="ml-4 bg-gray-200 text-gray-700 px-5 py-2 rounded-md hover:bg-gray-300 transition">
+                        Change Password
+                    </button>
+                </div>
+            </form>
+        </div>
 
     <?php else: ?>
         <h1 class="text-xl text-red-600">Page not found</h1>
@@ -389,9 +544,9 @@ $page = $_GET['page'] ?? 'teacher';
 
     </main>
 
-    <!-- Combined JavaScript (calendar, dropdown, tabs, quiz builder) -->
+    
     <script>
-    // Calendar (from teacher.php)
+    
     const calendarEl = document.getElementById('calendar');
     const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
@@ -467,7 +622,7 @@ $page = $_GET['page'] ?? 'teacher';
     const now = new Date();
     createCalendar(now.getFullYear(), now.getMonth());
 
-    // Toggle courses dropdown (from teacher.php)
+   
     function toggleCoursesDropdown() {
         const dropdown = document.getElementById('courses-dropdown');
         if (!dropdown) return;
@@ -480,7 +635,7 @@ $page = $_GET['page'] ?? 'teacher';
         }
     }
 
-    // Tabs and Quiz builder (from course.php)
+    
     function openTab(evt, tabName) {
         var i, tabcontent, tablinks;
         tabcontent = document.getElementsByClassName("tabcontent");
@@ -496,7 +651,7 @@ $page = $_GET['page'] ?? 'teacher';
         }
     }
 
-    // dynamic quiz builder
+    
     let questionCount = 0;
     function addQuizQuestion() {
         questionCount++;
@@ -526,7 +681,7 @@ $page = $_GET['page'] ?? 'teacher';
         quizQuestionsContainer.appendChild(questionDiv);
     }
 
-    // initialize first tab on course page load (if any tablinks exist)
+    
     document.addEventListener("DOMContentLoaded", function() {
         const firstTabButton = document.querySelector(".tablinks");
         if (firstTabButton) {
@@ -534,6 +689,5 @@ $page = $_GET['page'] ?? 'teacher';
         }
     });
     </script>
-
 </body>
 </html>
