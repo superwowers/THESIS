@@ -163,7 +163,7 @@ $courses = [
                         <img src="<?= $course['image'] ?>" class="w-full h-36 object-cover">
                         <div class="p-4 flex flex-col flex-grow">
                             <h3 class="font-bold text-lg text-primary-dark mb-2"><?= $course['title'] ?></h3>
-                            <button class="mt-auto bg-primary text-white py-2 px-4 rounded-md hover:bg-primary-light transition">Edit</button>
+                            <button class="mt-auto bg-primary text-white py-2 px-4 rounded-md hover:bg-primary-light transition">manage</button>
                         </div>
                     </div>
                 <?php endforeach; ?>
