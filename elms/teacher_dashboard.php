@@ -122,9 +122,9 @@ $page = $_GET['page'] ?? 'teacher';
         </ul>
 
         <div class="mt-0 md:mt-auto pt-2 md:pt-6 border-t border-primary-light w-full flex justify-center md:justify-start">
-            <a href="#" class="flex items-center gap-2 px-3 py-2 rounded hover:bg-primary-light transition text-sm md:text-base">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 md:h-6 md:w-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M18 8v6a6 6 0 11-12 0V8"/></svg>
-                <span class="hidden md:inline">Help</span>
+            <a href="#" onclick="alert('Logged out!')" class="flex items-center gap-2 px-3 py-2 rounded hover:bg-primary-light transition text-sm md:text-base">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 md:h-6 md:w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+                <span class="hidden md:inline">Logout</span>
             </a>
         </div>
     </nav>
@@ -151,10 +151,6 @@ $page = $_GET['page'] ?? 'teacher';
                     <span class="hidden md:inline font-medium">Professor Smith</span>
                 </button>
                  
-                <a href="#" onclick="alert('Logged out!')" class="flex items-center gap-2 text-red-600 hover:text-red-800 transition">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
-                    <span class="hidden md:inline font-medium">Logout</span>
-                </a>
             </div>
         </header>
 
