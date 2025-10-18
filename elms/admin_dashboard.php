@@ -3,15 +3,15 @@
 
 // Sample data for Admin Dashboard
 $teachers = [
-    ['name' => 'Mr. Smith', 'email' => 'smith@school.edu'],
-    ['name' => 'Ms. Johnson', 'email' => 'johnson@school.edu'],
-    ['name' => 'Mr. Brown', 'email' => 'brown@school.edu'],
+    ['id' => 1, 'name' => 'Mr. Smith', 'email' => 'smith@school.edu', 'password' => 'teacher123', 'students_handle' => 42, 'courses_handle' => ['Mathematics in the Modern World', 'Statistics']],
+    ['id' => 2, 'name' => 'Ms. Johnson', 'email' => 'johnson@school.edu', 'password' => 'teacher456', 'students_handle' => 38, 'courses_handle' => ['Computer Programming', 'Software Engineering']],
+    ['id' => 3, 'name' => 'Mr. Brown', 'email' => 'brown@school.edu', 'password' => 'teacher789', 'students_handle' => 35, 'courses_handle' => ['Art Appreciation']],
 ];
 
 $students = [
-    ['name' => 'Lauren Mae Espinar', 'email' => 'lrnmspnr@gmail.com'],
-    ['name' => 'Michael Brown', 'email' => 'michaelbrown@gmail.com'],
-    ['name' => 'Sarah Parker', 'email' => 'sarahparker@gmail.com'],
+    ['id' => 1, 'name' => 'Lauren Mae Espinar', 'email' => 'lrnmspnr@gmail.com', 'password' => 'student123', 'section' => 'Grade 11 - STEM A', 'courses_taken' => ['Mathematics in the Modern World', 'Computer Programming'], 'courses_not_taken' => ['Art Appreciation', 'Software Engineering']],
+    ['id' => 2, 'name' => 'Michael Brown', 'email' => 'michaelbrown@gmail.com', 'password' => 'student456', 'section' => 'Grade 11 - STEM B', 'courses_taken' => ['Computer Programming'], 'courses_not_taken' => ['Mathematics in the Modern World', 'Art Appreciation', 'Software Engineering']],
+    ['id' => 3, 'name' => 'Sarah Parker', 'email' => 'sarahparker@gmail.com', 'password' => 'student789', 'section' => 'Grade 12 - HUMSS A', 'courses_taken' => ['Art Appreciation', 'Mathematics in the Modern World'], 'courses_not_taken' => ['Computer Programming', 'Software Engineering']],
 ];
 
 $announcements = [
@@ -26,14 +26,13 @@ $adminTasks = [
     'Review submitted reports',
 ];
 
-$courses = [
-    ['title' => 'Mathematics in the Modern World', 'image' => 'https://images.unsplash.com/photo-1636466497217-26a8cbeaf0aa?auto=format&fit=crop&w=774&q=80'],
-    ['title' => 'Computer Programming', 'image' => 'https://images.unsplash.com/photo-1542831371-29b0f74f9713?auto=format&fit=crop&w=870&q=80'],
-    ['title' => 'Software Engineering', 'image' => 'https://images.unsplash.com/photo-1610563166150-b34df4f3bcd6?auto=format&fit=crop&w=1376&q=80'],
-    ['title' => 'Art Appreciation', 'image' => 'https://images.unsplash.com/photo-1547891654-e66ed7ebb968?auto=format&fit=crop&w=1470&q=80'],
+// Sections data with advisory assignments
+$sections = [
+    ['name' => 'Grade 11 - STEM A', 'students' => 42, 'adviser' => 'Mr. Smith', 'adviser_id' => 1, 'room' => 'Room 301'],
+    ['name' => 'Grade 11 - STEM B', 'students' => 38, 'adviser' => 'Ms. Johnson', 'adviser_id' => 2, 'room' => 'Room 302'],
+    ['name' => 'Grade 12 - HUMSS A', 'students' => 35, 'adviser' => 'Mr. Brown', 'adviser_id' => 3, 'room' => 'Room 201'],
+    ['name' => 'Grade 12 - ABM A', 'students' => 40, 'adviser' => 'Unassigned', 'adviser_id' => null, 'room' => 'Room 202'],
 ];
-
-    
 ?>
 
 <!DOCTYPE html>
@@ -68,53 +67,53 @@ $courses = [
 <body class="font-poppins bg-gradient-to-br from-primary to-primary-dark min-h-screen flex flex-col md:flex-row">
 
     <!-- Sidebar -->
-  <nav class="bg-gradient-to-b from-primary to-primary-dark text-white w-64 flex flex-col p-6 sticky top-0 h-screen shadow-lg">
-    <h1 class="text-3xl font-bold mb-10">ELMS</h1>
-    <ul class="flex flex-col gap-3 flex-grow">
-      <li>
-        <button class="nav-link flex items-center gap-3 w-full px-3 py-2 rounded hover:bg-primary-light transition" onclick="showSection(event,'dashboard')">
-          <svg xmlns='http://www.w3.org/2000/svg' class='h-5 w-5' fill='none' stroke='currentColor' stroke-width='2' viewBox='0 0 24 24'><path stroke-linecap='round' stroke-linejoin='round' d='M3 12l2-2m0 0l7-7 7 7M13 5v6h6'/></svg>
-          Dashboard
-        </button>
-      </li>
-      <li>
-        <button class="nav-link flex items-center gap-3 w-full px-3 py-2 rounded hover:bg-primary-light transition" onclick="showSection(event,'courses')">
-          <svg xmlns='http://www.w3.org/2000/svg' class='h-5 w-5' fill='none' stroke='currentColor' stroke-width='2' viewBox='0 0 24 24'><path stroke-linecap='round' stroke-linejoin='round' d='M12 20h9'/></svg>
-          Courses
-        </button>
-      </li>
-      <li>
-        <button class="nav-link flex items-center gap-3 w-full px-3 py-2 rounded hover:bg-primary-light transition" onclick="showSection(event,'teachers')">
-          <svg xmlns='http://www.w3.org/2000/svg' class='h-5 w-5' fill='none' stroke='currentColor' stroke-width='2' viewBox='0 0 24 24'><path stroke-linecap='round' stroke-linejoin='round' d='M9 17v-6a2 2 0 012-2h6'/></svg>
-          Teachers
-        </button>
-      </li>
-      <li>
-        <button class="nav-link flex items-center gap-3 w-full px-3 py-2 rounded hover:bg-primary-light transition" onclick="showSection(event,'students')">
-          <svg xmlns='http://www.w3.org/2000/svg' class='h-5 w-5' fill='none' stroke='currentColor' stroke-width='2' viewBox='0 0 24 24'><circle cx='12' cy='7' r='4'/><path stroke-linecap='round' stroke-linejoin='round' d='M5.5 21a6.5 6.5 0 0113 0'/></svg>
-          Students
-        </button>
-      </li>
-
-      <!-- NEW: Announcements button placed after Students and before Reports -->
-      <li>
-        <button class="nav-link flex items-center gap-3 w-full px-3 py-2 rounded hover:bg-primary-light transition" onclick="showSection(event,'announcements')">
-          <svg xmlns='http://www.w3.org/2000/svg' class='h-5 w-5' fill='none' stroke='currentColor' stroke-width='2' viewBox='0 0 24 24'><path stroke-linecap='round' stroke-linejoin='round' d='M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6 6 0 10-12 0v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9'/></svg>
-          Announcements
-        </button>
-      </li>
-
-      <li>
-        <button class="nav-link flex items-center gap-3 w-full px-3 py-2 rounded hover:bg-primary-light transition" onclick="showSection(event,'reports')">
-          <svg xmlns='http://www.w3.org/2000/svg' class='h-5 w-5' fill='none' stroke='currentColor' stroke-width='2' viewBox='0 0 24 24'><path stroke-linecap='round' stroke-linejoin='round' d='M3 3h18v18H3z'/></svg>
-          Reports
-        </button>
-      </li>
-    </ul>
-    <div class="border-t border-primary-light pt-4">
-      <button class="flex items-center gap-3 px-3 py-2 rounded hover:bg-primary-light transition w-full"><svg xmlns='http://www.w3.org/2000/svg' class='h-5 w-5' fill='none' stroke='currentColor' stroke-width='2' viewBox='0 0 24 24'><path stroke-linecap='round' stroke-linejoin='round' d='M18 8v6a6 6 0 11-12 0V8'/></svg> Logout</button>
-    </div>
-  </nav>
+    <nav class="bg-gradient-to-b from-primary to-primary-dark text-white w-64 flex flex-col p-6 sticky top-0 h-screen shadow-lg">
+        <h1 class="text-3xl font-bold mb-10">ELMS</h1>
+        <ul class="flex flex-col gap-3 flex-grow">
+            <li>
+                <button class="nav-link flex items-center gap-3 w-full px-3 py-2 rounded hover:bg-primary-light transition" onclick="showSection(event,'dashboard')">
+                    <svg xmlns='http://www.w3.org/2000/svg' class='h-5 w-5' fill='none' stroke='currentColor' stroke-width='2' viewBox='0 0 24 24'><path stroke-linecap='round' stroke-linejoin='round' d='M3 12l2-2m0 0l7-7 7 7M13 5v6h6'/></svg>
+                    Dashboard
+                </button>
+            </li>
+            <li>
+                <button class="nav-link flex items-center gap-3 w-full px-3 py-2 rounded hover:bg-primary-light transition" onclick="showSection(event,'sections')">
+                    <svg xmlns='http://www.w3.org/2000/svg' class='h-5 w-5' fill='none' stroke='currentColor' stroke-width='2' viewBox='0 0 24 24'><rect x='3' y='3' width='7' height='7'/><rect x='14' y='3' width='7' height='7'/><rect x='14' y='14' width='7' height='7'/><rect x='3' y='14' width='7' height='7'/></svg>
+                    Sections
+                </button>
+            </li>
+            <li>
+                <button class="nav-link flex items-center gap-3 w-full px-3 py-2 rounded hover:bg-primary-light transition" onclick="showSection(event,'teachers')">
+                    <svg xmlns='http://www.w3.org/2000/svg' class='h-5 w-5' fill='none' stroke='currentColor' stroke-width='2' viewBox='0 0 24 24'><path stroke-linecap='round' stroke-linejoin='round' d='M9 17v-6a2 2 0 012-2h6'/></svg>
+                    Teachers
+                </button>
+            </li>
+            <li>
+                <button class="nav-link flex items-center gap-3 w-full px-3 py-2 rounded hover:bg-primary-light transition" onclick="showSection(event,'students')">
+                    <svg xmlns='http://www.w3.org/2000/svg' class='h-5 w-5' fill='none' stroke='currentColor' stroke-width='2' viewBox='0 0 24 24'><circle cx='12' cy='7' r='4'/><path stroke-linecap='round' stroke-linejoin='round' d='M5.5 21a6.5 6.5 0 0113 0'/></svg>
+                    Students
+                </button>
+            </li>
+            <li>
+                <button class="nav-link flex items-center gap-3 w-full px-3 py-2 rounded hover:bg-primary-light transition" onclick="showSection(event,'announcements')">
+                    <svg xmlns='http://www.w3.org/2000/svg' class='h-5 w-5' fill='none' stroke='currentColor' stroke-width='2' viewBox='0 0 24 24'><path stroke-linecap='round' stroke-linejoin='round' d='M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6 6 0 10-12 0v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9'/></svg>
+                    Announcements
+                </button>
+            </li>
+            <li>
+                <button class="nav-link flex items-center gap-3 w-full px-3 py-2 rounded hover:bg-primary-light transition" onclick="showSection(event,'reports')">
+                    <svg xmlns='http://www.w3.org/2000/svg' class='h-5 w-5' fill='none' stroke='currentColor' stroke-width='2' viewBox='0 0 24 24'><path stroke-linecap='round' stroke-linejoin='round' d='M3 3h18v18H3z'/></svg>
+                    Reports
+                </button>
+            </li>
+        </ul>
+        <div class="border-t border-primary-light pt-4">
+            <button class="flex items-center gap-3 px-3 py-2 rounded hover:bg-primary-light transition w-full">
+                <svg xmlns='http://www.w3.org/2000/svg' class='h-5 w-5' fill='none' stroke='currentColor' stroke-width='2' viewBox='0 0 24 24'><path stroke-linecap='round' stroke-linejoin='round' d='M18 8v6a6 6 0 11-12 0V8'/></svg>
+                Logout
+            </button>
+        </div>
+    </nav>
 
     <!-- Main Content -->
     <main class="flex-grow p-4 md:p-6 flex flex-col gap-8 max-w-7xl mx-auto w-full">
@@ -134,20 +133,27 @@ $courses = [
                         <div class="absolute inset-0 bg-gradient-to-t from-primary-dark/80 to-transparent"></div>
                         <div class="absolute bottom-4 left-6 text-white">
                             <h2 class="text-3xl font-bold">Admin Overview</h2>
-                            <p class="text-sm md:text-base">Manage users, monitor courses, and update announcements here.</p>
+                            <p class="text-sm md:text-base">Manage users, sections, and monitor system activities.</p>
                         </div>
                     </section>
 
                     <section class="bg-white rounded-xl shadow-lg p-6">
-                        <h2 class="text-primary font-semibold text-2xl mb-6">Active Courses</h2>
-                        <div id="activeCoursesGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                            <?php foreach ($courses as $course): ?>
-                                <div class="bg-gray-50 rounded-lg shadow-md overflow-hidden flex flex-col">
-                                    <img src="<?= $course['image'] ?>" class="w-full h-36 object-cover">
-                                    <div class="p-4 flex flex-col flex-grow">
-                                        <h3 class="font-bold text-lg text-primary-dark mb-2"><?= $course['title'] ?></h3>
-                                        <button class="mt-auto bg-primary text-white py-2 px-4 rounded-md hover:bg-primary-light transition manage-course-btn" data-title="<?= htmlspecialchars($course['title']) ?>">Manage</button>
+                        <h2 class="text-primary font-semibold text-2xl mb-6">Active Sections</h2>
+                        <div id="activeSectionsGrid" class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                            <?php foreach (array_slice($sections, 0, 4) as $section): ?>
+                                <div class="bg-gray-50 rounded-lg shadow-md p-5 border-l-4 border-primary">
+                                    <div class="flex justify-between items-start mb-3">
+                                        <h3 class="font-bold text-lg text-primary-dark"><?= $section['name'] ?></h3>
+                                        <span class="bg-primary text-white text-xs px-2 py-1 rounded-full"><?= $section['students'] ?> students</span>
                                     </div>
+                                    <div class="text-sm text-gray-600 space-y-1">
+                                        <p><span class="font-medium">Adviser:</span> <?= $section['adviser'] ?></p>
+                                        <p><span class="font-medium">Room:</span> <?= $section['room'] ?></p>
+                                    </div>
+                                    <button class="mt-4 w-full bg-primary text-white py-2 px-4 rounded-md hover:bg-primary-light transition text-sm manage-section-btn" 
+                                            data-section='<?= json_encode($section) ?>'>
+                                        Manage Section
+                                    </button>
                                 </div>
                             <?php endforeach; ?>
                         </div>
@@ -174,7 +180,7 @@ $courses = [
                         </ul>
                     </div>
 
-                    <!-- Announcements (also appears as its own page via sidebar) -->
+                    <!-- Announcements -->
                     <div class="bg-white rounded-xl shadow-lg p-6">
                         <h2 class="text-primary font-semibold text-xl mb-4">Announcements</h2>
                         <ul class="divide-y divide-gray-200">
@@ -190,91 +196,144 @@ $courses = [
             </section>
         </section>
 
-        <!-- COURSES SECTION -->
-<section id="courses" class="content-section hidden-section">
-    <div class="bg-white rounded-xl shadow-lg p-6">
-        <div class="flex flex-col md:flex-row justify-between items-center mb-4 gap-4">
-            <h2 class="text-primary font-semibold text-2xl mb-0">Section Masterlist</h2>
-
-            <!-- Search bar -->
-            <input type="text" id="courseSearchInput" placeholder="Search courses..." 
-                class="border border-gray-300 rounded-md p-2 w-full md:w-64">
-
-            <!-- Add Course button -->
-            <button id="addCourseTopBtn" class="bg-primary text-white px-3 py-1 rounded hover:bg-primary-light transition">+ Add Course</button>
-        </div>
-
-        <div id="coursesGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            <?php foreach ($courses as $course): ?>
-                <div class="bg-gray-50 rounded-lg shadow-md overflow-hidden flex flex-col course-card">
-                    <img src="<?= $course['image'] ?>" class="w-full h-36 object-cover">
-                    <div class="p-4 flex flex-col flex-grow">
-                        <h3 class="font-bold text-lg text-primary-dark mb-2"><?= $course['title'] ?></h3>
-                        <button class="mt-auto bg-primary text-white py-2 px-4 rounded-md hover:bg-primary-light transition manage-course-btn" data-title="<?= htmlspecialchars($course['title']) ?>">Manage</button>
+        <!-- SECTIONS SECTION -->
+        <section id="sections" class="content-section hidden-section">
+            <div class="bg-white rounded-xl shadow-lg p-6">
+                <div class="flex flex-col md:flex-row justify-between items-center mb-6 gap-4">
+                    <h2 class="text-primary font-semibold text-2xl">Section Management</h2>
+                    <div class="flex gap-3 w-full md:w-auto">
+                        <input type="text" id="sectionSearchInput" placeholder="Search sections..." 
+                            class="border border-gray-300 rounded-md p-2 w-full md:w-64">
+                        <button id="addSectionBtn" class="bg-primary text-white px-4 py-2 rounded hover:bg-primary-light transition whitespace-nowrap">
+                            + Add Section
+                        </button>
                     </div>
                 </div>
-            <?php endforeach; ?>
-        </div>
-    </div>
-</section>
 
+                <div id="sectionsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <?php foreach ($sections as $section): ?>
+                        <div class="bg-gray-50 rounded-lg shadow-md p-5 border-l-4 border-primary section-card">
+                            <div class="flex justify-between items-start mb-3">
+                                <h3 class="font-bold text-lg text-primary-dark section-name"><?= $section['name'] ?></h3>
+                                <span class="bg-primary text-white text-xs px-2 py-1 rounded-full section-students"><?= $section['students'] ?> students</span>
+                            </div>
+                            <div class="text-sm text-gray-600 space-y-2 mb-4">
+                                <div class="flex items-center gap-2">
+                                    <svg xmlns='http://www.w3.org/2000/svg' class='h-4 w-4' fill='none' stroke='currentColor' stroke-width='2' viewBox='0 0 24 24'><path stroke-linecap='round' stroke-linejoin='round' d='M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z'/></svg>
+                                    <span class="section-adviser"><?= $section['adviser'] ?></span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <svg xmlns='http://www.w3.org/2000/svg' class='h-4 w-4' fill='none' stroke='currentColor' stroke-width='2' viewBox='0 0 24 24'><path stroke-linecap='round' stroke-linejoin='round' d='M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4'/></svg>
+                                    <span class="section-room"><?= $section['room'] ?></span>
+                                </div>
+                            </div>
+                            <button class="w-full bg-primary text-white py-2 px-4 rounded-md hover:bg-primary-light transition manage-section-btn" 
+                                    data-section='<?= json_encode($section) ?>'>
+                                Manage Section
+                            </button>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+        </section>
 
         <!-- TEACHERS SECTION -->
         <section id="teachers" class="content-section hidden-section">
-            <h2 class="text-3xl font-bold text-primary mb-4">Teachers</h2>
             <div class="bg-white rounded-xl shadow-lg p-6">
-                <table class="w-full text-left border-collapse">
-                    <thead>
-                        <tr class="bg-primary text-white">
-                            <th class="p-3">Name</th>
-                            <th class="p-3">Email</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach ($teachers as $t): ?>
-                            <tr class="border-b hover:bg-gray-50">
-                                <td class="p-3"><?= $t['name'] ?></td>
-                                <td class="p-3"><?= $t['email'] ?></td>
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-3xl font-bold text-primary">Teachers</h2>
+                    <button id="addTeacherBtn" class="bg-primary text-white px-4 py-2 rounded hover:bg-primary-light transition">
+                        + Add Teacher
+                    </button>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="bg-primary text-white">
+                                <th class="p-3">Name</th>
+                                <th class="p-3">Email</th>
+                                <th class="p-3">Students Handle</th>
+                                <th class="p-3">Advisory</th>
+                                <th class="p-3">Actions</th>
                             </tr>
-                        <?php endforeach; ?>
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody id="teachersTableBody">
+                            <?php foreach ($teachers as $t): ?>
+                                <tr class="border-b hover:bg-gray-50 teacher-row" data-teacher='<?= json_encode($t) ?>'>
+                                    <td class="p-3 cursor-pointer text-primary hover:underline teacher-name"><?= $t['name'] ?></td>
+                                    <td class="p-3 cursor-pointer text-primary hover:underline teacher-email"><?= $t['email'] ?></td>
+                                    <td class="p-3"><?= $t['students_handle'] ?></td>
+                                    <td class="p-3 text-gray-600">
+                                        <?php
+                                        $advisory = array_filter($sections, fn($s) => $s['adviser_id'] === $t['id']);
+                                        echo $advisory ? reset($advisory)['name'] : 'Not assigned';
+                                        ?>
+                                    </td>
+                                    <td class="p-3">
+                                        <div class="flex gap-2">
+                                            <button class="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 text-sm view-teacher-btn">View</button>
+                                            <button class="px-3 py-1 bg-yellow-500 text-white rounded hover:bg-yellow-600 text-sm archive-teacher-btn">Archive</button>
+                                            <button class="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 text-sm delete-teacher-btn">Delete</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </section>
 
         <!-- STUDENTS SECTION -->
         <section id="students" class="content-section hidden-section">
-            <h2 class="text-3xl font-bold text-primary mb-4">Students</h2>
             <div class="bg-white rounded-xl shadow-lg p-6">
-                <table class="w-full text-left border-collapse">
-                    <thead>
-                        <tr class="bg-primary text-white">
-                            <th class="p-3">Name</th>
-                            <th class="p-3">Email</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach ($students as $s): ?>
-                            <tr class="border-b hover:bg-gray-50">
-                                <td class="p-3"><?= $s['name'] ?></td>
-                                <td class="p-3"><?= $s['email'] ?></td>
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-3xl font-bold text-primary">Students</h2>
+                    <button id="addStudentBtn" class="bg-primary text-white px-4 py-2 rounded hover:bg-primary-light transition">
+                        + Add Student
+                    </button>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="bg-primary text-white">
+                                <th class="p-3">Name</th>
+                                <th class="p-3">Email</th>
+                                <th class="p-3">Section</th>
+                                <th class="p-3">Courses Taken</th>
+                                <th class="p-3">Actions</th>
                             </tr>
-                        <?php endforeach; ?>
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody id="studentsTableBody">
+                            <?php foreach ($students as $s): ?>
+                                <tr class="border-b hover:bg-gray-50 student-row" data-student='<?= json_encode($s) ?>'>
+                                    <td class="p-3 cursor-pointer text-primary hover:underline student-name"><?= $s['name'] ?></td>
+                                    <td class="p-3 cursor-pointer text-primary hover:underline student-email"><?= $s['email'] ?></td>
+                                    <td class="p-3"><?= $s['section'] ?></td>
+                                    <td class="p-3"><?= count($s['courses_taken']) ?></td>
+                                    <td class="p-3">
+                                        <div class="flex gap-2">
+                                            <button class="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 text-sm view-student-btn">View</button>
+                                            <button class="px-3 py-1 bg-yellow-500 text-white rounded hover:bg-yellow-600 text-sm archive-student-btn">Archive</button>
+                                            <button class="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 text-sm delete-student-btn">Delete</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </section>
 
-        <!-- ANNOUNCEMENTS SECTION (full page) -->
+        <!-- ANNOUNCEMENTS SECTION -->
         <section id="announcements" class="content-section hidden-section">
             <h2 class="text-3xl font-bold text-primary mb-4">Announcements</h2>
             <div class="bg-white rounded-xl shadow-lg p-6">
                 <div class="flex justify-between items-center mb-4">
-                    <p class="text-gray-600">Below are current announcements. (Data is from sample PHP array.)</p>
-                    <!-- Small non-functional 'Add' button placeholder - expand later if you want CRUD -->
+                    <p class="text-gray-600">Manage system announcements</p>
                     <button class="bg-primary text-white px-3 py-1 rounded hover:bg-primary-light transition">Add Announcement</button>
                 </div>
-
                 <ul class="divide-y divide-gray-200">
                     <?php foreach ($announcements as $a): ?>
                         <li class="py-4 flex flex-col md:flex-row md:justify-between md:items-center">
@@ -301,6 +360,222 @@ $courses = [
             </div>
         </section>
     </main>
+
+    <!-- Add Section Modal -->
+    <div id="addSectionModal" class="fixed inset-0 bg-black/50 flex items-center justify-center hidden z-40">
+        <div class="bg-white rounded-xl shadow-xl w-full max-w-md p-6 mx-4">
+            <h2 class="text-2xl font-semibold text-primary mb-4">Add New Section</h2>
+            <form id="addSectionForm">
+                <div class="mb-4">
+                    <label class="block mb-2 text-gray-700 font-medium">Section Name</label>
+                    <input type="text" id="addSectionName" class="w-full border border-gray-300 rounded-md p-2" placeholder="e.g., Grade 11 - STEM A" required>
+                </div>
+                <div class="mb-4">
+                    <label class="block mb-2 text-gray-700 font-medium">Number of Students</label>
+                    <input type="number" id="addSectionStudents" class="w-full border border-gray-300 rounded-md p-2" placeholder="0" min="0" required>
+                </div>
+                <div class="mb-4">
+                    <label class="block mb-2 text-gray-700 font-medium">Room</label>
+                    <input type="text" id="addSectionRoom" class="w-full border border-gray-300 rounded-md p-2" placeholder="e.g., Room 301" required>
+                </div>
+                <div class="mb-4">
+                    <label class="block mb-2 text-gray-700 font-medium">Assign Adviser</label>
+                    <select id="addSectionAdviser" class="w-full border border-gray-300 rounded-md p-2">
+                        <option value="">No adviser</option>
+                        <?php foreach ($teachers as $t): ?>
+                            <option value='<?= json_encode(['id' => $t['id'], 'name' => $t['name']]) ?>'><?= $t['name'] ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+                <div class="flex justify-end gap-2">
+                    <button type="button" id="cancelAddSection" class="px-4 py-2 rounded-md bg-gray-200 hover:bg-gray-300">Cancel</button>
+                    <button type="submit" class="px-4 py-2 rounded-md bg-primary text-white hover:bg-primary-light">Add Section</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Manage Section Modal -->
+    <div id="manageSectionModal" class="fixed inset-0 bg-black/50 flex items-center justify-center hidden z-50">
+        <div class="bg-white rounded-xl shadow-xl w-full max-w-md p-6 mx-4">
+            <h2 class="text-2xl font-semibold text-primary mb-4">Manage Section</h2>
+            <form id="manageSectionForm">
+                <div class="mb-4">
+                    <label class="block mb-2 text-gray-700 font-medium">Section Name</label>
+                    <input type="text" id="manageSectionName" class="w-full border border-gray-300 rounded-md p-2" required>
+                </div>
+                <div class="mb-4">
+                    <label class="block mb-2 text-gray-700 font-medium">Number of Students</label>
+                    <input type="number" id="manageSectionStudents" class="w-full border border-gray-300 rounded-md p-2" min="0" required>
+                </div>
+                <div class="mb-4">
+                    <label class="block mb-2 text-gray-700 font-medium">Room</label>
+                    <input type="text" id="manageSectionRoom" class="w-full border border-gray-300 rounded-md p-2" required>
+                </div>
+                <div class="mb-4">
+                    <label class="block mb-2 text-gray-700 font-medium">Assign Adviser</label>
+                    <select id="manageSectionAdviser" class="w-full border border-gray-300 rounded-md p-2">
+                        <option value="">No adviser</option>
+                        <?php foreach ($teachers as $t): ?>
+                            <option value='<?= json_encode(['id' => $t['id'], 'name' => $t['name']]) ?>'><?= $t['name'] ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+                <div class="flex justify-between items-center">
+                    <button type="button" id="deleteSectionBtn" class="px-4 py-2 rounded-md bg-red-600 text-white hover:bg-red-700">Delete</button>
+                    <div class="flex gap-2">
+                        <button type="button" id="cancelManageSection" class="px-4 py-2 rounded-md bg-gray-200 hover:bg-gray-300">Cancel</button>
+                        <button type="submit" class="px-4 py-2 rounded-md bg-primary text-white hover:bg-primary-light">Save Changes</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Teacher Details Modal -->
+    <div id="teacherDetailsModal" class="fixed inset-0 bg-black/50 flex items-center justify-center hidden z-50">
+        <div class="bg-white rounded-xl shadow-xl w-full max-w-2xl p-6 mx-4 max-h-[90vh] overflow-y-auto">
+            <h2 class="text-2xl font-semibold text-primary mb-6">Teacher Details</h2>
+            <form id="teacherDetailsForm">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <label class="block mb-2 text-gray-700 font-medium">Name</label>
+                        <input type="text" id="teacherName" class="w-full border border-gray-300 rounded-md p-2" required>
+                    </div>
+                    <div>
+                        <label class="block mb-2 text-gray-700 font-medium">Email</label>
+                        <input type="email" id="teacherEmail" class="w-full border border-gray-300 rounded-md p-2" required>
+                    </div>
+                </div>
+                <div class="mb-4">
+                    <label class="block mb-2 text-gray-700 font-medium">Password</label>
+                    <input type="text" id="teacherPassword" class="w-full border border-gray-300 rounded-md p-2" required>
+                </div>
+                <div class="mb-4">
+                    <label class="block mb-2 text-gray-700 font-medium">Students Handle</label>
+                    <input type="number" id="teacherStudentsHandle" class="w-full border border-gray-300 rounded-md p-2" min="0" required>
+                </div>
+                <div class="mb-4">
+                    <label class="block mb-2 text-gray-700 font-medium">Courses Handle</label>
+                    <div id="teacherCoursesContainer" class="space-y-2">
+                        <!-- Courses will be added dynamically -->
+                    </div>
+                    <button type="button" id="addTeacherCourse" class="mt-2 text-primary hover:underline text-sm">+ Add Course</button>
+                </div>
+                <div class="flex justify-end gap-2 pt-4 border-t">
+                    <button type="button" id="cancelTeacherDetails" class="px-4 py-2 rounded-md bg-gray-200 hover:bg-gray-300">Cancel</button>
+                    <button type="submit" class="px-4 py-2 rounded-md bg-primary text-white hover:bg-primary-light">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Student Details Modal -->
+    <div id="studentDetailsModal" class="fixed inset-0 bg-black/50 flex items-center justify-center hidden z-50">
+        <div class="bg-white rounded-xl shadow-xl w-full max-w-2xl p-6 mx-4 max-h-[90vh] overflow-y-auto">
+            <h2 class="text-2xl font-semibold text-primary mb-6">Student Details</h2>
+            <form id="studentDetailsForm">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <label class="block mb-2 text-gray-700 font-medium">Name</label>
+                        <input type="text" id="studentName" class="w-full border border-gray-300 rounded-md p-2" required>
+                    </div>
+                    <div>
+                        <label class="block mb-2 text-gray-700 font-medium">Email</label>
+                        <input type="email" id="studentEmail" class="w-full border border-gray-300 rounded-md p-2" required>
+                    </div>
+                </div>
+                <div class="mb-4">
+                    <label class="block mb-2 text-gray-700 font-medium">Password</label>
+                    <input type="text" id="studentPassword" class="w-full border border-gray-300 rounded-md p-2" required>
+                </div>
+                <div class="mb-4">
+                    <label class="block mb-2 text-gray-700 font-medium">Section</label>
+                    <input type="text" id="studentSection" class="w-full border border-gray-300 rounded-md p-2" required>
+                </div>
+                <div class="mb-4">
+                    <label class="block mb-2 text-gray-700 font-medium">Courses Taken</label>
+                    <div id="studentCoursesTakenContainer" class="space-y-2">
+                        <!-- Courses taken will be added dynamically -->
+                    </div>
+                    <button type="button" id="addStudentCourseTaken" class="mt-2 text-primary hover:underline text-sm">+ Add Course Taken</button>
+                </div>
+                <div class="mb-4">
+                    <label class="block mb-2 text-gray-700 font-medium">Courses Not Taken</label>
+                    <div id="studentCoursesNotTakenContainer" class="space-y-2">
+                        <!-- Courses not taken will be added dynamically -->
+                    </div>
+                    <button type="button" id="addStudentCourseNotTaken" class="mt-2 text-primary hover:underline text-sm">+ Add Course Not Taken</button>
+                </div>
+                <div class="flex justify-end gap-2 pt-4 border-t">
+                    <button type="button" id="cancelStudentDetails" class="px-4 py-2 rounded-md bg-gray-200 hover:bg-gray-300">Cancel</button>
+                    <button type="submit" class="px-4 py-2 rounded-md bg-primary text-white hover:bg-primary-light">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add Teacher Modal -->
+    <div id="addTeacherModal" class="fixed inset-0 bg-black/50 flex items-center justify-center hidden z-50">
+        <div class="bg-white rounded-xl shadow-xl w-full max-w-2xl p-6 mx-4 max-h-[90vh] overflow-y-auto">
+            <h2 class="text-2xl font-semibold text-primary mb-6">Add New Teacher</h2>
+            <form id="addTeacherForm">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <label class="block mb-2 text-gray-700 font-medium">Name</label>
+                        <input type="text" id="addTeacherName" class="w-full border border-gray-300 rounded-md p-2" required>
+                    </div>
+                    <div>
+                        <label class="block mb-2 text-gray-700 font-medium">Email</label>
+                        <input type="email" id="addTeacherEmail" class="w-full border border-gray-300 rounded-md p-2" required>
+                    </div>
+                </div>
+                <div class="mb-4">
+                    <label class="block mb-2 text-gray-700 font-medium">Password</label>
+                    <input type="text" id="addTeacherPassword" class="w-full border border-gray-300 rounded-md p-2" required>
+                </div>
+                <div class="mb-4">
+                    <label class="block mb-2 text-gray-700 font-medium">Students Handle</label>
+                    <input type="number" id="addTeacherStudentsHandle" class="w-full border border-gray-300 rounded-md p-2" min="0" value="0" required>
+                </div>
+                <div class="flex justify-end gap-2 pt-4 border-t">
+                    <button type="button" id="cancelAddTeacher" class="px-4 py-2 rounded-md bg-gray-200 hover:bg-gray-300">Cancel</button>
+                    <button type="submit" class="px-4 py-2 rounded-md bg-primary text-white hover:bg-primary-light">Add Teacher</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add Student Modal -->
+    <div id="addStudentModal" class="fixed inset-0 bg-black/50 flex items-center justify-center hidden z-50">
+        <div class="bg-white rounded-xl shadow-xl w-full max-w-2xl p-6 mx-4 max-h-[90vh] overflow-y-auto">
+            <h2 class="text-2xl font-semibold text-primary mb-6">Add New Student</h2>
+            <form id="addStudentForm">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <label class="block mb-2 text-gray-700 font-medium">Name</label>
+                        <input type="text" id="addStudentName" class="w-full border border-gray-300 rounded-md p-2" required>
+                    </div>
+                    <div>
+                        <label class="block mb-2 text-gray-700 font-medium">Email</label>
+                        <input type="email" id="addStudentEmail" class="w-full border border-gray-300 rounded-md p-2" required>
+                    </div>
+                </div>
+                <div class="mb-4">
+                    <label class="block mb-2 text-gray-700 font-medium">Password</label>
+                    <input type="text" id="addStudentPassword" class="w-full border border-gray-300 rounded-md p-2" required>
+                </div>
+                <div class="mb-4">
+                    <label class="block mb-2 text-gray-700 font-medium">Section</label>
+                    <input type="text" id="addStudentSection" class="w-full border border-gray-300 rounded-md p-2" required>
+                </div>
+                <div class="flex justify-end gap-2 pt-4 border-t">
+                    <button type="button" id="cancelAddStudent" class="px-4 py-2 rounded-md bg-gray-200 hover:bg-gray-300">Cancel</button>
+                    <button type="submit" class="px-4 py-2 rounded-md bg-primary text-white hover:bg-primary-light">Add Student</button>
+                </div>
+            </form>
+        </div>
+    </div>
 
     <script>
         // Calendar logic
@@ -357,323 +632,626 @@ $courses = [
         const now=new Date();
         createCalendar(now.getFullYear(),now.getMonth());
 
-        // Sidebar button switching (fixed to receive event)
+        // Sidebar navigation
         function showSection(evt, sectionId) {
-            // hide all sections
             document.querySelectorAll('.content-section').forEach(sec => sec.classList.add('hidden-section'));
-            // show target
             const target = document.getElementById(sectionId);
             if (target) target.classList.remove('hidden-section');
 
-            // active link handling
             document.querySelectorAll('.nav-link').forEach(btn => btn.classList.remove('active-link'));
             if (evt && evt.currentTarget) evt.currentTarget.classList.add('active-link');
 
-            // scroll to top of main content when switching sections
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // Optional: set initial active nav link (Dashboard)
         document.addEventListener('DOMContentLoaded', () => {
             const firstNav = document.querySelector('.nav-link');
             if (firstNav) firstNav.classList.add('active-link');
         });
-    </script>
 
-    <!-- ===================== -->
-    <!-- Add Course Modal (frontend-only) -->
-    <!-- ===================== -->
-    <div id="addCourseModal" class="fixed inset-0 bg-black/50 flex items-center justify-center hidden z-40">
-      <div class="bg-white rounded-xl shadow-xl w-96 p-6">
-        <h2 class="text-2xl font-semibold text-primary mb-4">Add Course</h2>
-        <form id="addCourseForm">
-          <label class="block mb-2 text-gray-700 font-medium">Course Title</label>
-          <input type="text" id="addCourseTitle" class="w-full border border-gray-300 rounded-md p-2 mb-4" placeholder="Course title" required>
+        // Section Management Logic
+        const addSectionBtn = document.getElementById('addSectionBtn');
+        const addSectionModal = document.getElementById('addSectionModal');
+        const cancelAddSection = document.getElementById('cancelAddSection');
+        const addSectionForm = document.getElementById('addSectionForm');
 
-          <label class="block mb-2 text-gray-700 font-medium">Image URL</label>
-          <input type="url" id="addCourseImage" class="w-full border border-gray-300 rounded-md p-2 mb-4" placeholder="https://example.com/image.jpg" required>
+        const manageSectionModal = document.getElementById('manageSectionModal');
+        const cancelManageSection = document.getElementById('cancelManageSection');
+        const manageSectionForm = document.getElementById('manageSectionForm');
+        const deleteSectionBtn = document.getElementById('deleteSectionBtn');
 
-          <div class="flex justify-end gap-2">
-            <button type="button" id="cancelAddCourse" class="px-4 py-2 rounded-md bg-gray-200 hover:bg-gray-300">Cancel</button>
-            <button type="submit" class="px-4 py-2 rounded-md bg-primary text-white hover:bg-primary-light">Add</button>
-          </div>
-        </form>
-      </div>
-    </div>
+        const sectionsGrid = document.getElementById('sectionsGrid');
+        const activeSectionsGrid = document.getElementById('activeSectionsGrid');
+        const sectionSearchInput = document.getElementById('sectionSearchInput');
 
-    <!-- ===================== -->
-    <!-- Manage Course Modal (frontend-only) -->
-    <!-- ===================== -->
-    <div id="manageCourseModal" class="fixed inset-0 bg-black/50 flex items-center justify-center hidden z-50">
-      <div class="bg-white rounded-xl shadow-xl w-96 p-6">
-        <h2 class="text-2xl font-semibold text-primary mb-4">Manage Course</h2>
+        let currentSectionCard = null;
 
-        <div id="managePreview" class="mb-4">
-          <img id="manageCourseImg" src="" class="w-full h-36 object-cover rounded mb-3" alt="Course image">
-          <h3 id="manageCourseTitleDisplay" class="font-bold text-lg text-primary-dark mb-2"></h3>
-        </div>
+        // Create section card
+        function createSectionCard(sectionData) {
+            const card = document.createElement('div');
+            card.className = 'bg-gray-50 rounded-lg shadow-md p-5 border-l-4 border-primary section-card';
+            card.innerHTML = `
+                <div class="flex justify-between items-start mb-3">
+                    <h3 class="font-bold text-lg text-primary-dark section-name">${sectionData.name}</h3>
+                    <span class="bg-primary text-white text-xs px-2 py-1 rounded-full section-students">${sectionData.students} students</span>
+                </div>
+                <div class="text-sm text-gray-600 space-y-2 mb-4">
+                    <div class="flex items-center gap-2">
+                        <svg xmlns='http://www.w3.org/2000/svg' class='h-4 w-4' fill='none' stroke='currentColor' stroke-width='2' viewBox='0 0 24 24'><path stroke-linecap='round' stroke-linejoin='round' d='M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z'/></svg>
+                        <span class="section-adviser">${sectionData.adviser}</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <svg xmlns='http://www.w3.org/2000/svg' class='h-4 w-4' fill='none' stroke='currentColor' stroke-width='2' viewBox='0 0 24 24'><path stroke-linecap='round' stroke-linejoin='round' d='M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4'/></svg>
+                        <span class="section-room">${sectionData.room}</span>
+                    </div>
+                </div>
+                <button class="w-full bg-primary text-white py-2 px-4 rounded-md hover:bg-primary-light transition manage-section-btn" 
+                        data-section='${JSON.stringify(sectionData)}'>
+                    Manage Section
+                </button>
+            `;
+            attachManageHandler(card);
+            return card;
+        }
 
-        <form id="manageCourseForm">
-          <label class="block mb-2 text-gray-700 font-medium">Course Title</label>
-          <input type="text" id="manageCourseTitle" class="w-full border border-gray-300 rounded-md p-2 mb-3">
+        // Attach manage handler to section card
+        function attachManageHandler(card) {
+            const btn = card.querySelector('.manage-section-btn');
+            if (!btn) return;
 
-          <label class="block mb-2 text-gray-700 font-medium">Image URL</label>
-          <input type="url" id="manageCourseImageUrl" class="w-full border border-gray-300 rounded-md p-2 mb-4" placeholder="https://example.com/image.jpg">
+            btn.addEventListener('click', () => {
+                const sectionData = JSON.parse(btn.dataset.section);
+                currentSectionCard = card;
+                
+                document.getElementById('manageSectionName').value = sectionData.name;
+                document.getElementById('manageSectionStudents').value = sectionData.students;
+                document.getElementById('manageSectionRoom').value = sectionData.room;
+                
+                const adviserSelect = document.getElementById('manageSectionAdviser');
+                adviserSelect.value = '';
+                if (sectionData.adviser_id) {
+                    Array.from(adviserSelect.options).forEach(opt => {
+                        if (opt.value) {
+                            const optData = JSON.parse(opt.value);
+                            if (optData.id === sectionData.adviser_id) {
+                                adviserSelect.value = opt.value;
+                            }
+                        }
+                    });
+                }
+                
+                manageSectionModal.classList.remove('hidden');
+            });
+        }
 
-          <div class="flex justify-between items-center">
-            <button type="button" id="deleteCourseBtn" class="px-4 py-2 rounded-md bg-red-600 text-white hover:bg-red-700">Delete</button>
-            <div class="flex gap-2">
-              <button type="button" id="cancelManage" class="px-4 py-2 rounded-md bg-gray-200 hover:bg-gray-300">Cancel</button>
-              <button type="submit" class="px-4 py-2 rounded-md bg-primary text-white hover:bg-primary-light">Save</button>
-            </div>
-          </div>
-        </form>
-      </div>
-    </div>
-
-    <!-- ===================== -->
-    <!-- Edit Course Modal (existing in your file) -->
-    <!-- ===================== -->
-    <div id="editCourseModal" class="fixed inset-0 bg-black/50 flex items-center justify-center hidden z-50">
-      <div class="bg-white rounded-xl shadow-xl w-96 p-6">
-        <h2 class="text-2xl font-semibold text-primary mb-4">Edit Course</h2>
-        <form id="editCourseForm">
-          <label class="block mb-2 text-gray-700 font-medium">Course Title</label>
-          <input type="text" id="courseTitleInput" class="w-full border border-gray-300 rounded-md p-2 mb-4" required>
-          <div class="flex justify-end gap-2">
-            <button type="button" id="cancelEdit" class="px-4 py-2 rounded-md bg-gray-200 hover:bg-gray-300">Cancel</button>
-            <button type="submit" class="px-4 py-2 rounded-md bg-primary text-white hover:bg-primary-light">Save</button>
-          </div>
-        </form>
-      </div>
-    </div>
-
-    <script>
-      // ====== Course Add / Manage Frontend Logic ======
-
-      // Grids (we added IDs above)
-      const activeCoursesGrid = document.getElementById('activeCoursesGrid');
-      const coursesGrid = document.getElementById('coursesGrid');
-
-      // Add Course modal elements
-      const addCourseTopBtn = document.getElementById('addCourseTopBtn');
-      const addCourseModal = document.getElementById('addCourseModal');
-      const cancelAddCourse = document.getElementById('cancelAddCourse');
-      const addCourseForm = document.getElementById('addCourseForm');
-      const addCourseTitle = document.getElementById('addCourseTitle');
-      const addCourseImage = document.getElementById('addCourseImage');
-
-      // Manage Course modal elements
-      const manageCourseModal = document.getElementById('manageCourseModal');
-      const manageCourseImg = document.getElementById('manageCourseImg');
-      const manageCourseTitleDisplay = document.getElementById('manageCourseTitleDisplay');
-      const manageCourseTitle = document.getElementById('manageCourseTitle');
-      const manageCourseImageUrl = document.getElementById('manageCourseImageUrl');
-      const deleteCourseBtn = document.getElementById('deleteCourseBtn');
-      const cancelManage = document.getElementById('cancelManage');
-      const manageCourseForm = document.getElementById('manageCourseForm');
-
-      let manageTargetCard = null; // the DOM card being managed
-
-      // Helper: attach manage handlers to a card's manage button
-      function attachManageHandlerToCard(card) {
-        const btn = card.querySelector('.manage-course-btn') || card.querySelector('.manage-course-btn') || card.querySelector('button.manage-course-btn') || card.querySelector('button.manageBtn') || card.querySelector('button.manage');
-        // find any button with class 'manage-course-btn' or 'manageBtn' or text 'Manage'
-        const possibleBtns = card.querySelectorAll('button');
-        let manageBtn = null;
-        possibleBtns.forEach(b => {
-          if (b.classList.contains('manage-course-btn') || b.textContent.trim().toLowerCase() === 'manage') manageBtn = b;
+        // Attach handlers to existing cards
+        document.querySelectorAll('.manage-section-btn').forEach(btn => {
+            const card = btn.closest('.section-card') || btn.closest('div');
+            attachManageHandler(card);
         });
-        if (!manageBtn) {
-          // fallback: first button in card
-          manageBtn = card.querySelector('button');
-        }
-        if (!manageBtn) return;
 
-        manageBtn.addEventListener('click', () => {
-          // open manage modal populated with this card's info
-          manageTargetCard = card;
-          const img = card.querySelector('img');
-          const h3 = card.querySelector('h3');
-          manageCourseImg.src = img ? img.src : '';
-          manageCourseTitleDisplay.textContent = h3 ? h3.textContent : '';
-          manageCourseTitle.value = h3 ? h3.textContent : '';
-          manageCourseImageUrl.value = '';
-          manageCourseModal.classList.remove('hidden');
+        // Open add section modal
+        addSectionBtn.addEventListener('click', () => {
+            addSectionModal.classList.remove('hidden');
         });
-      }
 
-      // Attach to existing cards in Dashboard and Courses
-      document.querySelectorAll('#activeCoursesGrid > div, #coursesGrid > div').forEach(card => {
-        attachManageHandlerToCard(card);
-      });
+        // Close add section modal
+        cancelAddSection.addEventListener('click', () => {
+            addSectionModal.classList.add('hidden');
+            addSectionForm.reset();
+        });
 
-      // Add Course button open/close
-      addCourseTopBtn.addEventListener('click', () => addCourseModal.classList.remove('hidden'));
-      cancelAddCourse.addEventListener('click', () => {
-        addCourseModal.classList.add('hidden');
-        addCourseForm.reset();
-      });
-
-      // Add Course submit (frontend only) - append to both grids so it appears in Dashboard active and All Courses
-      addCourseForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const title = addCourseTitle.value.trim();
-        const image = addCourseImage.value.trim() || 'https://via.placeholder.com/400x200?text=Course+Image';
-        if (!title) return alert('Please enter a course title.');
-
-        // Create card HTML matches your existing card markup (for both places)
-        const createCard = () => {
-          const container = document.createElement('div');
-          container.className = 'bg-white rounded-lg shadow-md overflow-hidden flex flex-col';
-          const imgEl = document.createElement('img');
-          imgEl.src = image;
-          imgEl.className = 'w-full h-36 object-cover';
-          const inner = document.createElement('div');
-          inner.className = 'p-4 flex flex-col flex-grow';
-          const h3 = document.createElement('h3');
-          h3.className = 'font-bold text-lg text-primary-dark mb-2';
-          h3.textContent = title;
-          const btn = document.createElement('button');
-          btn.className = 'mt-auto bg-primary text-white py-2 px-4 rounded-md hover:bg-primary-light transition manage-course-btn';
-          btn.textContent = 'manage';
-          inner.appendChild(h3);
-          inner.appendChild(btn);
-          container.appendChild(imgEl);
-          container.appendChild(inner);
-          return container;
-        };
-
-        // append to coursesGrid
-        const newCourseCard = createCard();
-        coursesGrid.appendChild(newCourseCard);
-        attachManageHandlerToCard(newCourseCard);
-
-        // append a similar card to activeCoursesGrid (Dashboard)
-        const activeCard = createCard();
-        // dashboard cards have bg-gray-50 in original, so mirror that small difference
-        activeCard.className = 'bg-gray-50 rounded-lg shadow-md overflow-hidden flex flex-col';
-        // adjust the button class if needed
-        const actBtn = activeCard.querySelector('button');
-        if (actBtn) actBtn.className = 'mt-auto bg-primary text-white py-2 px-4 rounded-md hover:bg-primary-light transition manage-course-btn';
-        activeCoursesGrid.appendChild(activeCard);
-        attachManageHandlerToCard(activeCard);
-
-        // close and reset
-        addCourseModal.classList.add('hidden');
-        addCourseForm.reset();
-      });
-
-      // Manage modal handlers
-      cancelManage.addEventListener('click', () => {
-        manageCourseModal.classList.add('hidden');
-        manageTargetCard = null;
-      });
-
-      // Save changes in manage modal (frontend only)
-      manageCourseForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        if (!manageTargetCard) return;
-        const newTitle = manageCourseTitle.value.trim();
-        const newImage = manageCourseImageUrl.value.trim();
-        if (newTitle) {
-          const h3 = manageTargetCard.querySelector('h3');
-          if (h3) h3.textContent = newTitle;
-        }
-        if (newImage) {
-          const img = manageTargetCard.querySelector('img');
-          if (img) img.src = newImage;
-        }
-        manageCourseModal.classList.add('hidden');
-        manageTargetCard = null;
-      });
-
-      // Delete course from page (frontend only)
-      deleteCourseBtn.addEventListener('click', () => {
-        if (!manageTargetCard) return;
-        if (confirm('Are you sure you want to delete this course?')) {
-          // remove corresponding card in both grids if matching title+img
-          const targetTitle = manageTargetCard.querySelector('h3') ? manageTargetCard.querySelector('h3').textContent : null;
-          const targetImg = manageTargetCard.querySelector('img') ? manageTargetCard.querySelector('img').src : null;
-
-          // remove the manageTargetCard itself
-          manageTargetCard.remove();
-
-          // also attempt to remove any duplicate from the other grid (title+img match)
-          document.querySelectorAll('#coursesGrid > div, #activeCoursesGrid > div').forEach(card => {
-            const h3 = card.querySelector('h3');
-            const img = card.querySelector('img');
-            if (h3 && img && h3.textContent === targetTitle && img.src === targetImg) {
-              card.remove();
+        // Add section form submit
+        addSectionForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const name = document.getElementById('addSectionName').value.trim();
+            const students = document.getElementById('addSectionStudents').value;
+            const room = document.getElementById('addSectionRoom').value.trim();
+            const adviserValue = document.getElementById('addSectionAdviser').value;
+            
+            let adviser = 'Unassigned';
+            let adviser_id = null;
+            
+            if (adviserValue) {
+                const adviserData = JSON.parse(adviserValue);
+                adviser = adviserData.name;
+                adviser_id = adviserData.id;
             }
-          });
+            
+            const sectionData = { name, students, adviser, adviser_id, room };
+            
+            // Add to sections grid
+            const newCard = createSectionCard(sectionData);
+            sectionsGrid.appendChild(newCard);
+            
+            // Add to dashboard active sections (max 4)
+            if (activeSectionsGrid.children.length < 4) {
+                const dashCard = createSectionCard(sectionData);
+                activeSectionsGrid.appendChild(dashCard);
+            }
+            
+            addSectionModal.classList.add('hidden');
+            addSectionForm.reset();
+        });
 
-          manageCourseModal.classList.add('hidden');
-          manageTargetCard = null;
+        // Close manage section modal
+        cancelManageSection.addEventListener('click', () => {
+            manageSectionModal.classList.add('hidden');
+            currentSectionCard = null;
+        });
+
+        // Manage section form submit
+        manageSectionForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            if (!currentSectionCard) return;
+            
+            const name = document.getElementById('manageSectionName').value.trim();
+            const students = document.getElementById('manageSectionStudents').value;
+            const room = document.getElementById('manageSectionRoom').value.trim();
+            const adviserValue = document.getElementById('manageSectionAdviser').value;
+            
+            let adviser = 'Unassigned';
+            let adviser_id = null;
+            
+            if (adviserValue) {
+                const adviserData = JSON.parse(adviserValue);
+                adviser = adviserData.name;
+                adviser_id = adviserData.id;
+            }
+            
+            // Update card display
+            currentSectionCard.querySelector('.section-name').textContent = name;
+            currentSectionCard.querySelector('.section-students').textContent = students + ' students';
+            currentSectionCard.querySelector('.section-adviser').textContent = adviser;
+            currentSectionCard.querySelector('.section-room').textContent = room;
+            
+            // Update button data
+            const btn = currentSectionCard.querySelector('.manage-section-btn');
+            const sectionData = { name, students, adviser, adviser_id, room };
+            btn.dataset.section = JSON.stringify(sectionData);
+            
+            manageSectionModal.classList.add('hidden');
+            currentSectionCard = null;
+        });
+
+        // Delete section
+        deleteSectionBtn.addEventListener('click', () => {
+            if (!currentSectionCard) return;
+            if (confirm('Are you sure you want to delete this section?')) {
+                const sectionName = currentSectionCard.querySelector('.section-name').textContent;
+                
+                // Remove from sections grid
+                currentSectionCard.remove();
+                
+                // Remove from dashboard if exists
+                document.querySelectorAll('#activeSectionsGrid .section-card').forEach(card => {
+                    if (card.querySelector('.section-name').textContent === sectionName) {
+                        card.remove();
+                    }
+                });
+                
+                manageSectionModal.classList.add('hidden');
+                currentSectionCard = null;
+            }
+        });
+
+        // Search sections
+        sectionSearchInput.addEventListener('input', () => {
+            const query = sectionSearchInput.value.toLowerCase();
+            document.querySelectorAll('#sectionsGrid .section-card').forEach(card => {
+                const name = card.querySelector('.section-name').textContent.toLowerCase();
+                const adviser = card.querySelector('.section-adviser').textContent.toLowerCase();
+                const room = card.querySelector('.section-room').textContent.toLowerCase();
+                
+                if (name.includes(query) || adviser.includes(query) || room.includes(query)) {
+                    card.style.display = '';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
+
+        // Close modals on overlay click
+        addSectionModal.addEventListener('click', (e) => {
+            if (e.target === addSectionModal) {
+                addSectionModal.classList.add('hidden');
+                addSectionForm.reset();
+            }
+        });
+
+        manageSectionModal.addEventListener('click', (e) => {
+            if (e.target === manageSectionModal) {
+                manageSectionModal.classList.add('hidden');
+                currentSectionCard = null;
+            }
+        });
+
+        // ====== TEACHER MANAGEMENT ======
+        const teacherDetailsModal = document.getElementById('teacherDetailsModal');
+        const addTeacherModal = document.getElementById('addTeacherModal');
+        const addTeacherBtn = document.getElementById('addTeacherBtn');
+        const teachersTableBody = document.getElementById('teachersTableBody');
+        let currentTeacherRow = null;
+
+        // Open teacher details modal when clicking name or email
+        function attachTeacherClickHandlers(row) {
+            const nameEl = row.querySelector('.teacher-name');
+            const emailEl = row.querySelector('.teacher-email');
+            const viewBtn = row.querySelector('.view-teacher-btn');
+            
+            [nameEl, emailEl, viewBtn].forEach(el => {
+                if (el) {
+                    el.addEventListener('click', () => {
+                        const teacherData = JSON.parse(row.dataset.teacher);
+                        openTeacherDetailsModal(teacherData, row);
+                    });
+                }
+            });
+
+            // Archive button
+            const archiveBtn = row.querySelector('.archive-teacher-btn');
+            if (archiveBtn) {
+                archiveBtn.addEventListener('click', () => {
+                    if (confirm('Archive this teacher?')) {
+                        row.style.opacity = '0.5';
+                        row.style.backgroundColor = '#fef3c7';
+                        alert('Teacher archived successfully!');
+                    }
+                });
+            }
+
+            // Delete button
+            const deleteBtn = row.querySelector('.delete-teacher-btn');
+            if (deleteBtn) {
+                deleteBtn.addEventListener('click', () => {
+                    if (confirm('Are you sure you want to delete this teacher? This action cannot be undone.')) {
+                        row.remove();
+                        alert('Teacher deleted successfully!');
+                    }
+                });
+            }
         }
-      });
 
-      // Close manage modal when clicking overlay
-      manageCourseModal.addEventListener('click', (e) => {
-        if (e.target === manageCourseModal) {
-          manageCourseModal.classList.add('hidden');
-          manageTargetCard = null;
+        // Attach handlers to existing teacher rows
+        document.querySelectorAll('.teacher-row').forEach(row => {
+            attachTeacherClickHandlers(row);
+        });
+
+        function openTeacherDetailsModal(data, row) {
+            currentTeacherRow = row;
+            document.getElementById('teacherName').value = data.name;
+            document.getElementById('teacherEmail').value = data.email;
+            document.getElementById('teacherPassword').value = data.password;
+            document.getElementById('teacherStudentsHandle').value = data.students_handle;
+            
+            // Populate courses
+            const coursesContainer = document.getElementById('teacherCoursesContainer');
+            coursesContainer.innerHTML = '';
+            if (data.courses_handle && data.courses_handle.length > 0) {
+                data.courses_handle.forEach(course => {
+                    addTeacherCourseField(course);
+                });
+            }
+            
+            teacherDetailsModal.classList.remove('hidden');
         }
-      });
 
-      // Close add modal when clicking overlay
-      addCourseModal.addEventListener('click', (e) => {
-        if (e.target === addCourseModal) {
-          addCourseModal.classList.add('hidden');
-          addCourseForm.reset();
+        function addTeacherCourseField(value = '') {
+            const coursesContainer = document.getElementById('teacherCoursesContainer');
+            const courseDiv = document.createElement('div');
+            courseDiv.className = 'flex gap-2';
+            courseDiv.innerHTML = `
+                <input type="text" class="flex-1 border border-gray-300 rounded-md p-2 teacher-course-input" value="${value}" placeholder="Course name">
+                <button type="button" class="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 remove-course-btn">Remove</button>
+            `;
+            courseDiv.querySelector('.remove-course-btn').addEventListener('click', () => courseDiv.remove());
+            coursesContainer.appendChild(courseDiv);
         }
-      });
 
-      // Re-hook your existing Edit Course modal logic to only work if opened directly
-      // (Kept for backward compatibility — it will not conflict with the Manage modal above)
-      const editModal = document.getElementById('editCourseModal');
-      const courseTitleInput = document.getElementById('courseTitleInput');
-      const cancelEditBtn = document.getElementById('cancelEdit');
-      let currentCourseCard = null;
+        document.getElementById('addTeacherCourse').addEventListener('click', () => {
+            addTeacherCourseField();
+        });
 
-      // NOTE: We DO NOT attach the old manage-course-btn to this modal now.
-      // But if you still have external code opening editCourseModal, the save logic remains functional:
+        // Save teacher details
+        document.getElementById('teacherDetailsForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            if (!currentTeacherRow) return;
 
-      cancelEditBtn.addEventListener('click', () => {
-        editModal.classList.add('hidden');
-        currentCourseCard = null;
-      });
+            const name = document.getElementById('teacherName').value.trim();
+            const email = document.getElementById('teacherEmail').value.trim();
+            const password = document.getElementById('teacherPassword').value.trim();
+            const studentsHandle = document.getElementById('teacherStudentsHandle').value;
+            
+            const courses = [];
+            document.querySelectorAll('.teacher-course-input').forEach(input => {
+                if (input.value.trim()) courses.push(input.value.trim());
+            });
 
-      document.getElementById('editCourseForm').addEventListener('submit', e => {
-        e.preventDefault();
-        if (currentCourseCard) {
-          const newTitle = courseTitleInput.value.trim();
-          if (newTitle) {
-            const h3 = currentCourseCard.querySelector('h3');
-            if (h3) h3.textContent = newTitle;
-            const manageBtn = currentCourseCard.querySelector('.manage-course-btn');
-            if (manageBtn) manageBtn.dataset.title = newTitle;
-          }
+            // Update row data
+            const teacherData = {
+                id: JSON.parse(currentTeacherRow.dataset.teacher).id,
+                name,
+                email,
+                password,
+                students_handle: studentsHandle,
+                courses_handle: courses
+            };
+                        // Update dataset
+            currentTeacherRow.dataset.teacher = JSON.stringify(teacherData);
+
+            // Update visible columns
+            currentTeacherRow.querySelector('.teacher-name').textContent = name;
+            currentTeacherRow.querySelector('.teacher-email').textContent = email;
+            currentTeacherRow.querySelector('td:nth-child(3)').textContent = studentsHandle;
+
+            teacherDetailsModal.classList.add('hidden');
+            currentTeacherRow = null;
+            alert('Teacher details saved successfully!');
+        });
+
+        // Close teacher details modal
+        document.getElementById('cancelTeacherDetails').addEventListener('click', () => {
+            teacherDetailsModal.classList.add('hidden');
+            currentTeacherRow = null;
+        });
+
+        teacherDetailsModal.addEventListener('click', (e) => {
+            if (e.target === teacherDetailsModal) {
+                teacherDetailsModal.classList.add('hidden');
+                currentTeacherRow = null;
+            }
+        });
+
+        // Add new teacher
+        addTeacherBtn.addEventListener('click', () => {
+            addTeacherModal.classList.remove('hidden');
+        });
+
+        document.getElementById('cancelAddTeacher').addEventListener('click', () => {
+            addTeacherModal.classList.add('hidden');
+            document.getElementById('addTeacherForm').reset();
+        });
+
+        document.getElementById('addTeacherForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const name = document.getElementById('addTeacherName').value.trim();
+            const email = document.getElementById('addTeacherEmail').value.trim();
+            const password = document.getElementById('addTeacherPassword').value.trim();
+            const studentsHandle = document.getElementById('addTeacherStudentsHandle').value;
+
+            const newTeacher = {
+                id: Date.now(),
+                name,
+                email,
+                password,
+                students_handle: studentsHandle,
+                courses_handle: []
+            };
+
+            const row = document.createElement('tr');
+            row.className = 'border-b hover:bg-gray-50 teacher-row';
+            row.dataset.teacher = JSON.stringify(newTeacher);
+            row.innerHTML = `
+                <td class="p-3 cursor-pointer text-primary hover:underline teacher-name">${name}</td>
+                <td class="p-3 cursor-pointer text-primary hover:underline teacher-email">${email}</td>
+                <td class="p-3">${studentsHandle}</td>
+                <td class="p-3 text-gray-600">Not assigned</td>
+                <td class="p-3">
+                    <div class="flex gap-2">
+                        <button class="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 text-sm view-teacher-btn">View</button>
+                        <button class="px-3 py-1 bg-yellow-500 text-white rounded hover:bg-yellow-600 text-sm archive-teacher-btn">Archive</button>
+                        <button class="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 text-sm delete-teacher-btn">Delete</button>
+                    </div>
+                </td>
+            `;
+            teachersTableBody.appendChild(row);
+            attachTeacherClickHandlers(row);
+
+            addTeacherModal.classList.add('hidden');
+            e.target.reset();
+            alert('Teacher added successfully!');
+        });
+
+        addTeacherModal.addEventListener('click', (e) => {
+            if (e.target === addTeacherModal) {
+                addTeacherModal.classList.add('hidden');
+            }
+        });
+
+        // ====== STUDENT MANAGEMENT ======
+        const studentDetailsModal = document.getElementById('studentDetailsModal');
+        const addStudentModal = document.getElementById('addStudentModal');
+        const addStudentBtn = document.getElementById('addStudentBtn');
+        const studentsTableBody = document.getElementById('studentsTableBody');
+        let currentStudentRow = null;
+
+        // Add new student
+        addStudentBtn.addEventListener('click', () => {
+            addStudentModal.classList.remove('hidden');
+        });
+
+        document.getElementById('cancelAddStudent').addEventListener('click', () => {
+            addStudentModal.classList.add('hidden');
+            document.getElementById('addStudentForm').reset();
+        });
+
+        document.getElementById('addStudentForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const name = document.getElementById('addStudentName').value.trim();
+            const email = document.getElementById('addStudentEmail').value.trim();
+            const password = document.getElementById('addStudentPassword').value.trim();
+            const section = document.getElementById('addStudentSection').value.trim();
+
+            const newStudent = {
+                id: Date.now(),
+                name,
+                email,
+                password,
+                section,
+                courses_taken: [],
+                courses_not_taken: []
+            };
+
+            const row = document.createElement('tr');
+            row.className = 'border-b hover:bg-gray-50 student-row';
+            row.dataset.student = JSON.stringify(newStudent);
+            row.innerHTML = `
+                <td class="p-3 cursor-pointer text-primary hover:underline student-name">${name}</td>
+                <td class="p-3 cursor-pointer text-primary hover:underline student-email">${email}</td>
+                <td class="p-3">${section}</td>
+                <td class="p-3">0</td>
+                <td class="p-3">
+                    <div class="flex gap-2">
+                        <button class="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 text-sm view-student-btn">View</button>
+                        <button class="px-3 py-1 bg-yellow-500 text-white rounded hover:bg-yellow-600 text-sm archive-student-btn">Archive</button>
+                        <button class="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 text-sm delete-student-btn">Delete</button>
+                    </div>
+                </td>
+            `;
+            studentsTableBody.appendChild(row);
+            attachStudentClickHandlers(row);
+
+            addStudentModal.classList.add('hidden');
+            e.target.reset();
+            alert('Student added successfully!');
+        });
+
+        addStudentModal.addEventListener('click', (e) => {
+            if (e.target === addStudentModal) {
+                addStudentModal.classList.add('hidden');
+            }
+        });
+
+        // Student row click
+        function attachStudentClickHandlers(row) {
+            const nameEl = row.querySelector('.student-name');
+            const emailEl = row.querySelector('.student-email');
+            const viewBtn = row.querySelector('.view-student-btn');
+
+            [nameEl, emailEl, viewBtn].forEach(el => {
+                if (el) {
+                    el.addEventListener('click', () => {
+                        const studentData = JSON.parse(row.dataset.student);
+                        openStudentDetailsModal(studentData, row);
+                    });
+                }
+            });
+
+            const archiveBtn = row.querySelector('.archive-student-btn');
+            if (archiveBtn) {
+                archiveBtn.addEventListener('click', () => {
+                    if (confirm('Archive this student?')) {
+                        row.style.opacity = '0.5';
+                        row.style.backgroundColor = '#fef3c7';
+                        alert('Student archived successfully!');
+                    }
+                });
+            }
+
+            const deleteBtn = row.querySelector('.delete-student-btn');
+            if (deleteBtn) {
+                deleteBtn.addEventListener('click', () => {
+                    if (confirm('Are you sure you want to delete this student?')) {
+                        row.remove();
+                        alert('Student deleted successfully!');
+                    }
+                });
+            }
         }
-        editModal.classList.add('hidden');
-        currentCourseCard = null;
-      });
 
-      // Course Search Filter
-const courseSearchInput = document.getElementById('courseSearchInput');
-courseSearchInput.addEventListener('input', () => {
-    const query = courseSearchInput.value.toLowerCase();
-    document.querySelectorAll('#coursesGrid .course-card').forEach(card => {
-        const title = card.querySelector('h3').textContent.toLowerCase();
-        card.style.display = title.includes(query) ? '' : 'none';
-    });
-});
+        document.querySelectorAll('.student-row').forEach(row => attachStudentClickHandlers(row));
 
-      // If any code still tries to open editCourseModal by setting currentCourseCard,
-      // you can call:
-      // currentCourseCard = someCard; courseTitleInput.value = someCard.querySelector('h3').textContent; editModal.classList.remove('hidden');
+        function openStudentDetailsModal(data, row) {
+            currentStudentRow = row;
+            document.getElementById('studentName').value = data.name;
+            document.getElementById('studentEmail').value = data.email;
+            document.getElementById('studentPassword').value = data.password;
+            document.getElementById('studentSection').value = data.section;
 
-      // End of Course Add/Manage logic
+            const takenContainer = document.getElementById('studentCoursesTakenContainer');
+            const notTakenContainer = document.getElementById('studentCoursesNotTakenContainer');
+            takenContainer.innerHTML = '';
+            notTakenContainer.innerHTML = '';
+
+            if (data.courses_taken) {
+                data.courses_taken.forEach(c => addStudentCourseField(takenContainer, c));
+            }
+            if (data.courses_not_taken) {
+                data.courses_not_taken.forEach(c => addStudentCourseField(notTakenContainer, c));
+            }
+
+            studentDetailsModal.classList.remove('hidden');
+        }
+
+        function addStudentCourseField(container, value = '') {
+            const div = document.createElement('div');
+            div.className = 'flex gap-2';
+            div.innerHTML = `
+                <input type="text" class="flex-1 border border-gray-300 rounded-md p-2 student-course-input" value="${value}">
+                <button type="button" class="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 remove-course-btn">Remove</button>
+            `;
+            div.querySelector('.remove-course-btn').addEventListener('click', () => div.remove());
+            container.appendChild(div);
+        }
+
+        document.getElementById('addStudentCourseTaken').addEventListener('click', () => {
+            addStudentCourseField(document.getElementById('studentCoursesTakenContainer'));
+        });
+        document.getElementById('addStudentCourseNotTaken').addEventListener('click', () => {
+            addStudentCourseField(document.getElementById('studentCoursesNotTakenContainer'));
+        });
+
+        document.getElementById('studentDetailsForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            if (!currentStudentRow) return;
+
+            const name = document.getElementById('studentName').value.trim();
+            const email = document.getElementById('studentEmail').value.trim();
+            const password = document.getElementById('studentPassword').value.trim();
+            const section = document.getElementById('studentSection').value.trim();
+
+            const coursesTaken = [];
+            document.querySelectorAll('#studentCoursesTakenContainer .student-course-input').forEach(input => {
+                if (input.value.trim()) coursesTaken.push(input.value.trim());
+            });
+            const coursesNotTaken = [];
+            document.querySelectorAll('#studentCoursesNotTakenContainer .student-course-input').forEach(input => {
+                if (input.value.trim()) coursesNotTaken.push(input.value.trim());
+            });
+
+            const updatedData = {
+                id: JSON.parse(currentStudentRow.dataset.student).id,
+                name,
+                email,
+                password,
+                section,
+                courses_taken: coursesTaken,
+                courses_not_taken: coursesNotTaken
+            };
+
+            currentStudentRow.dataset.student = JSON.stringify(updatedData);
+            currentStudentRow.querySelector('.student-name').textContent = name;
+            currentStudentRow.querySelector('.student-email').textContent = email;
+            currentStudentRow.querySelector('td:nth-child(3)').textContent = section;
+            currentStudentRow.querySelector('td:nth-child(4)').textContent = coursesTaken.length;
+
+            studentDetailsModal.classList.add('hidden');
+            currentStudentRow = null;
+            alert('Student details saved successfully!');
+        });
+
+        document.getElementById('cancelStudentDetails').addEventListener('click', () => {
+            studentDetailsModal.classList.add('hidden');
+            currentStudentRow = null;
+        });
+
+        studentDetailsModal.addEventListener('click', (e) => {
+            if (e.target === studentDetailsModal) {
+                studentDetailsModal.classList.add('hidden');
+                currentStudentRow = null;
+            }
+        });
     </script>
 </body>
 </html>
