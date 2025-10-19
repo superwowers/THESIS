@@ -239,15 +239,18 @@ $sections = [
 
         <!-- TEACHERS SECTION -->
         <section id="teachers" class="content-section hidden-section">
-            <div class="bg-white rounded-xl shadow-lg p-6">
-                <div class="flex justify-between items-center mb-6">
-                    <h2 class="text-3xl font-bold text-primary">Teachers</h2>
-                    <button id="addTeacherBtn" class="bg-primary text-white px-4 py-2 rounded hover:bg-primary-light transition">
-                        + Add Teacher
-                    </button>
-                </div>
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left border-collapse">
+            <div class="flex flex-col md:flex-row justify-between items-center mb-6 gap-4">
+    <h2 class="text-3xl font-bold text-primary">Teachers</h2>
+    <div class="flex gap-3 w-full md:w-auto">
+        <input type="text" id="teacherSearchInput" placeholder="Search teachers..."
+            class="border border-gray-300 rounded-md p-2 w-full md:w-64">
+        <button id="addTeacherBtn" class="bg-primary text-white px-4 py-2 rounded hover:bg-primary-light transition whitespace-nowrap">
+            + Add Teacher
+        </button>
+    </div>
+</div>
+                <div class="overflow-x-auto bg-white rounded-lg shadow">
+    <table class="w-full text-left border-collapse bg-white">
                         <thead>
                             <tr class="bg-primary text-white">
                                 <th class="p-3">Name</th>
@@ -286,15 +289,18 @@ $sections = [
 
         <!-- STUDENTS SECTION -->
         <section id="students" class="content-section hidden-section">
-            <div class="bg-white rounded-xl shadow-lg p-6">
-                <div class="flex justify-between items-center mb-6">
-                    <h2 class="text-3xl font-bold text-primary">Students</h2>
-                    <button id="addStudentBtn" class="bg-primary text-white px-4 py-2 rounded hover:bg-primary-light transition">
-                        + Add Student
-                    </button>
-                </div>
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left border-collapse">
+           <div class="flex flex-col md:flex-row justify-between items-center mb-6 gap-4">
+    <h2 class="text-3xl font-bold text-primary">Students</h2>
+    <div class="flex gap-3 w-full md:w-auto">
+        <input type="text" id="studentSearchInput" placeholder="Search students..."
+            class="border border-gray-300 rounded-md p-2 w-full md:w-64">
+        <button id="addStudentBtn" class="bg-primary text-white px-4 py-2 rounded hover:bg-primary-light transition whitespace-nowrap">
+            + Add Student
+        </button>
+    </div>
+</div> 
+               <div class="overflow-x-auto bg-white rounded-lg shadow">
+    <table class="w-full text-left border-collapse bg-white">
                         <thead>
                             <tr class="bg-primary text-white">
                                 <th class="p-3">Name</th>
@@ -837,6 +843,8 @@ $sections = [
         });
 
         // Search sections
+
+        // ===== SECTION SEARCH =====
         sectionSearchInput.addEventListener('input', () => {
             const query = sectionSearchInput.value.toLowerCase();
             document.querySelectorAll('#sectionsGrid .section-card').forEach(card => {
@@ -851,6 +859,56 @@ $sections = [
                 }
             });
         });
+
+        // ===== TEACHER SEARCH =====
+const teacherSearchInput = document.getElementById('teacherSearchInput');
+if (teacherSearchInput) {
+    teacherSearchInput.addEventListener('input', () => {
+        const query = teacherSearchInput.value.toLowerCase();
+        document.querySelectorAll('#teachersTableBody tr').forEach(row => {
+            const name = row.querySelector('.teacher-name')?.textContent.toLowerCase() || '';
+            const email = row.querySelector('.teacher-email')?.textContent.toLowerCase() || '';
+            const students = row.children[2]?.textContent.toLowerCase() || '';
+            const advisory = row.children[3]?.textContent.toLowerCase() || '';
+
+            if (
+                name.includes(query) ||
+                email.includes(query) ||
+                students.includes(query) ||
+                advisory.includes(query)
+            ) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+        });
+    });
+}
+
+// ===== STUDENT SEARCH =====
+const studentSearchInput = document.getElementById('studentSearchInput');
+if (studentSearchInput) {
+    studentSearchInput.addEventListener('input', () => {
+        const query = studentSearchInput.value.toLowerCase();
+        document.querySelectorAll('#studentsTableBody tr').forEach(row => {
+            const name = row.querySelector('.student-name')?.textContent.toLowerCase() || '';
+            const email = row.querySelector('.student-email')?.textContent.toLowerCase() || '';
+            const section = row.children[2]?.textContent.toLowerCase() || '';
+            const courses = row.children[3]?.textContent.toLowerCase() || '';
+
+            if (
+                name.includes(query) ||
+                email.includes(query) ||
+                section.includes(query) ||
+                courses.includes(query)
+            ) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+        });
+    });
+}
 
         // Close modals on overlay click
         addSectionModal.addEventListener('click', (e) => {
