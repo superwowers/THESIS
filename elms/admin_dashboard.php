@@ -583,6 +583,46 @@ $sections = [
         </div>
     </div>
 
+    <!-- Add Announcement Modal -->
+<div id="addAnnouncementModal"
+     class="fixed inset-0 bg-black/50 flex items-center justify-center hidden z-50">
+  <div class="bg-white rounded-xl shadow-xl w-full max-w-md p-6 mx-4">
+    <h2 class="text-2xl font-semibold text-primary mb-4">Add New Announcement</h2>
+    <form id="addAnnouncementForm">
+      <div class="mb-4">
+        <label class="block mb-2 text-gray-700 font-medium">Announcement Title</label>
+        <input type="text" id="announcementTitle"
+               class="w-full border border-gray-300 rounded-md p-2"
+               placeholder="e.g., System Maintenance on Oct. 25"
+               required>
+      </div>
+      <div class="mb-4">
+        <label class="block mb-2 text-gray-700 font-medium">Description</label>
+        <textarea id="announcementDescription"
+                  class="w-full border border-gray-300 rounded-md p-2 h-24 resize-none"
+                  placeholder="Write the details of your announcement..."
+                  required></textarea>
+      </div>
+      <div class="mb-4">
+        <label class="block mb-2 text-gray-700 font-medium">Date</label>
+        <input type="date" id="announcementDate"
+               class="w-full border border-gray-300 rounded-md p-2"
+               required>
+      </div>
+      <div class="flex justify-end gap-2">
+        <button type="button" id="cancelAddAnnouncement"
+                class="px-4 py-2 rounded-md bg-gray-200 hover:bg-gray-300">
+          Cancel
+        </button>
+        <button type="submit"
+                class="px-4 py-2 rounded-md bg-primary text-white hover:bg-primary-light">
+          Add Announcement
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
     <script>
         // Calendar logic
         const calendarEl = document.getElementById('calendar');
@@ -1310,6 +1350,95 @@ if (studentSearchInput) {
                 currentStudentRow = null;
             }
         });
+
+        // ===== ANNOUNCEMENT MANAGEMENT =====
+const addAnnouncementBtn = document.querySelector('#announcements button.bg-primary');
+const addAnnouncementModal = document.getElementById('addAnnouncementModal');
+const cancelAddAnnouncement = document.getElementById('cancelAddAnnouncement');
+const addAnnouncementForm = document.getElementById('addAnnouncementForm');
+const announcementsList = document.querySelector('#announcements ul');
+
+// Open modal
+addAnnouncementBtn.addEventListener('click', () => {
+  addAnnouncementModal.classList.remove('hidden');
+});
+
+// Close modal
+cancelAddAnnouncement.addEventListener('click', () => {
+  addAnnouncementModal.classList.add('hidden');
+  addAnnouncementForm.reset();
+});
+
+// Close modal when clicking overlay
+addAnnouncementModal.addEventListener('click', e => {
+  if (e.target === addAnnouncementModal) {
+    addAnnouncementModal.classList.add('hidden');
+    addAnnouncementForm.reset();
+  }
+});
+
+// Add new announcement
+addAnnouncementForm.addEventListener('submit', e => {
+  e.preventDefault();
+
+  const title = document.getElementById('announcementTitle').value.trim();
+  const description = document.getElementById('announcementDescription').value.trim();
+  const date = document.getElementById('announcementDate').value;
+
+  if (!title || !description || !date) return;
+
+  const li = document.createElement('li');
+  li.className = 'py-4 flex flex-col md:flex-row md:justify-between md:items-start';
+  li.innerHTML = `
+    <div class="max-w-md">
+      <h3 class="font-semibold text-gray-800">${title}</h3>
+      <p class="text-sm text-gray-600 mt-1">${description}</p>
+      <p class="text-xs text-gray-500 mt-1">
+        ${new Date(date).toLocaleDateString('en-US', {year:'numeric',month:'long',day:'numeric'})}
+      </p>
+    </div>
+    <div class="mt-3 md:mt-0 flex gap-2">
+      <button class="px-3 py-1 rounded border border-gray-200 hover:bg-gray-50 view-announcement">View</button>
+      <button class="px-3 py-1 rounded border border-gray-200 hover:bg-gray-50 edit-announcement">Edit</button>
+      <button class="px-3 py-1 rounded border border-red-200 text-red-600 hover:bg-red-50 delete-announcement">Delete</button>
+    </div>
+  `;
+
+  announcementsList.prepend(li);
+  addAnnouncementModal.classList.add('hidden');
+  addAnnouncementForm.reset();
+  alert('Announcement added successfully!');
+});
+
+// Handle view / edit / delete
+document.addEventListener('click', e => {
+  const btn = e.target;
+  const li = btn.closest('li');
+  if (!li) return;
+
+  const titleEl = li.querySelector('h3');
+  const descEl = li.querySelector('p.text-sm');
+  const dateEl = li.querySelector('p.text-xs');
+
+  if (btn.classList.contains('delete-announcement')) {
+    if (confirm('Delete this announcement?')) li.remove();
+  }
+
+  if (btn.classList.contains('edit-announcement')) {
+    const newTitle = prompt('Edit title:', titleEl.textContent);
+    const newDesc = prompt('Edit description:', descEl.textContent);
+    if (newTitle && newDesc) {
+      titleEl.textContent = newTitle;
+      descEl.textContent = newDesc;
+      alert('Announcement updated!');
+    }
+  }
+
+  if (btn.classList.contains('view-announcement')) {
+    alert(`📢 ${titleEl.textContent}\n\n${descEl.textContent}\n\n${dateEl.textContent}`);
+  }
+});
+
     </script>
 </body>
 </html>
