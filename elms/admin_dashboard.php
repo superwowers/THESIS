@@ -215,7 +215,12 @@ $sections = [
                         <div class="bg-gray-50 rounded-lg shadow-md p-5 border-l-4 border-primary section-card">
                             <div class="flex justify-between items-start mb-3">
                                 <h3 class="font-bold text-lg text-primary-dark section-name"><?= $section['name'] ?></h3>
-                                <span class="bg-primary text-white text-xs px-2 py-1 rounded-full section-students"><?= $section['students'] ?> students</span>
+                                <button 
+    class="bg-primary text-white text-xs px-2 py-1 rounded-full section-students-btn hover:bg-primary-light transition"
+    data-section="<?= htmlspecialchars($section['name']) ?>"
+>
+    <?= $section['students'] ?> students
+</button>
                             </div>
                             <div class="text-sm text-gray-600 space-y-2 mb-4">
                                 <div class="flex items-center gap-2">
@@ -881,6 +886,29 @@ $sections = [
                 currentSectionCard = null;
             }
         });
+
+        // ===== SHOW STUDENTS BY SECTION =====
+document.querySelectorAll('.section-students-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        const sectionName = btn.dataset.section;
+
+        // Switch to the Students section
+        showSection(null, 'students');
+
+        // Filter students by section
+        document.querySelectorAll('#studentsTableBody tr').forEach(row => {
+            const studentData = JSON.parse(row.dataset.student);
+            if (studentData.section === sectionName) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+        });
+
+        // Optionally scroll up
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+});
 
         // Search sections
 
